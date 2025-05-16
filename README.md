@@ -1,24 +1,64 @@
-# <center>Project One</center>
-## <center>IT-140 -- Southern New Hampshire University</center>
+# Vault 166: Text-Based Survival Game
 
-### Scenario
-You work for a small company that creates text-based games. 
-You have been asked to pitch an idea to your team for a 
-text-based adventure game with a theme and environment of 
-your choice. Your game must include different rooms, items, 
-and a villain. The basic gameplay will require the player to 
-move between different rooms to gather all the items. 
-A player wins the game by collecting all the items 
-before encountering the villain. The player will have two 
-options for commands in the game: moving to a different room, 
-and getting an item from the room they are in. Movement between 
-rooms happens in four simple directions: North, South, East, and 
-West.
+Text-based game where players must survive in a
+hostile environment, such as a post-apocalyptic world or a
+deserted island, by managing resources, crafting tools, and
+making critical choices.
 
-You must include the designs for your game as a part of your idea
-pitch. Specifically, you have been asked to provide a map that 
-displays the different rooms and items. You have also been asked 
-to use pseudocode or flowcharts to design code for moving between
-rooms and getting items. If your pitch gets approved, these
-designs will help your team members understand the pitch, and
-will help the team develop the game in the future.
+## Storyboard
+
+### Theme and Basic Storyline
+
+Survival
+
+In a nuclear wasteland, you are the first
+wanderer to come across Vault 166 which has been sealed for
+over 50 years. Vault 166 was used for experimental research
+of weapons, tools and other resources. There has been claims
+of a machine that removes all radiation and can shield
+a city within it. Explore the vault, find the schematics and
+escape before the oxygen depletes... or worse!
+
+### Rooms
+
+1. Vacuum/Purge Room
+2. Decontamination Room
+3. Foyer
+4. Mechanical Room
+5. Security
+6. Experimental Room
+7. Chemical Room
+8. Laboratory
+9. Emergency Room
+
+### Items
+
+1. Blaster
+2. Key
+3. Boots
+4. Flashlight
+5. Wrench
+6. Batteries
+7. Schematics
+
+### Villain
+
+Maradonyx
+
+The reason for Vault 166 to be abandoned lies inside. A terrible
+experiment gone wrong, Maradonyx is an unbreakable gem fusion
+with the radiation keeping it alive.
+
+Strengths:
+
+-  Radiation Shine
+-  Charge Attack
+
+Weaknesses:
+
+-  Ice
+-  Light
+
+## Map Design
+
+![Map](Vault166_Map.jpg)
