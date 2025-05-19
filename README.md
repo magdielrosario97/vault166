@@ -1,45 +1,41 @@
 # Vault 166: Text-Based Survival Game
 
 Text-based game where players must survive in a
-hostile environment, such as a post-apocalyptic world or a
-deserted island, by managing resources, crafting tools, and
-making critical choices.
+hostile environment inside a vault by acquiring items and
+making critical choices. Inspired by the Fallout series!
 
 ## Storyboard
 
 ### Theme and Basic Storyline
 
-Survival
+Genre: Survival
 
 In a nuclear wasteland, you are the first
 wanderer to come across Vault 166 which has been sealed for
 over 50 years. Vault 166 was used for experimental research
 of weapons, tools and other resources. There has been claims
-of a machine that removes all radiation and can shield
-a city within it. Explore the vault, find the schematics and
-escape before the oxygen depletes... or worse!
+of schematics for a weapon capable of removing all radiation.
+Explore the vault, find the schematics andescape before the
+oxygen depletes... or worse!
 
 ### Rooms
 
-1. Vacuum/Purge Room
+1. Vault Entrance
 2. Decontamination Room
-3. Foyer
-4. Mechanical Room
-5. Security
+3. Storage Room
+4. Security
+5. Atrium
 6. Experimental Room
 7. Chemical Room
 8. Laboratory
-9. Emergency Room
+9. Medical Room
+10.   Living Quarters
+11.   Cafeteria
+12.   Research & Development
 
 ### Items
 
-1. Blaster
-2. Key
-3. Boots
-4. Flashlight
-5. Wrench
-6. Batteries
-7. Schematics
+TBD
 
 ### Villain
 
@@ -61,4 +57,4 @@ Weaknesses:
 
 ## Map Design
 
-![Map](Vault166_Map.jpg)
+![Map](vault166_map.jpg)

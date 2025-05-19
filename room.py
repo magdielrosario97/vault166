@@ -1,25 +1,15 @@
-# Define rooms into a dictionary holding the room name
-rooms = {
-    "Vacuum Room": "You are in sealed vacuum room.",
-    "Mechanical Room": "You entered a room with a tool box.",
-    "Decon Room": "You step in a room full of decon equipment.",
-    "Foyer": "You encounter the check in desk in an open wide room.",
-    "Security": "You come across a room full of security camera feed.",
-    "Experimental Room": "You walk into a bright white room full of prototypes.",
-    "Emergency Room": "You walk into an emergency room with electronic medical equipment.",
-    "Laboratory": "You come into an extremely clean room.",
-    "Chemical Room": "You opened the door holding Maradonyx."
-}
+# Create a Room class to store each room's info
+class Room:
+    def __init__(self, name, description="", required_item=None, hazard_item=None, item=None, is_locked=False):
+        self.name = name  # Name of the room
+        self.description = description  # Description of the room
+        self.required_item = required_item if required_item else []  # Item needed to enter this room (optional)
+        self.hazard_item = hazard_item if hazard_item else [] # Item needed to avoid consequences
+        self.item = item  # Item found in this room (optional)
+        self.is_locked = is_locked  # True if the room is locked
+        self.connections = {}  # Dictionary to hold connected rooms 
 
-# Define the connection of the rooms into a dictionary
-room_connections = {
-    "Vacuum Room": {"west": "Mechanical Room", "south": "Decon Room"},
-    "Mechanical Room": {"east": "Vacuum Room"},
-    "Decon Room": {"north": "Vacuum Room", "south": "Foyer"},
-    "Foyer": {"north": "Decon Room", "south": "Laboratory", "west": "Security", "east": "Experimental Room"},
-    "Security": {"east": "Foyer"},
-    "Experimental Room": {"west": "Foyer", "south": "Emergency Room"},
-    "Emergency Room": {"west": "Laboratory", "north": "Experimental Room"},
-    "Laboratory": {"west": "Chemical Room", "north": "Foyer", "east": "Emergency Room"},
-    "Chemical Room": {"east": "Laboratory"}
-}
+    # Connect this room to another in a specific direction
+    def connect(self, direction, room):
+        # Store a reference to the other room in the given direction
+        self.connections[direction] = room
