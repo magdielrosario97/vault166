@@ -6,27 +6,27 @@ Created by Magdiel Rosario Orta
 
 from map import build_map
 from utils import welcome
+from player import Player
 
 # Game function
 def vault166():
 
     # Game Initialization
-    current_room = "Vacuum Room"
-    inventory = []
+    player = Player("Vacuum Room")
     game_over = False
     rooms, room_connections, items = build_map()
 
     # Game Loop
     while not game_over:
         # Display current room description
-        print(f'\033[92mYou moved to {current_room}\033[0m')
-        print(rooms[current_room])
+        print(f'\033[92mYou moved to {player.current_room}\033[0m')
+        print(rooms[player.current_room])
         # Display player's inventory
-        print("Inventory:", inventory)
+        print("Inventory:", player.inventory)
 
         # Check if the current room contains an item
-        if items[current_room] is not None:
-            print(f"You see a \033[94m{items[current_room]}\033[0m in the room.")
+        if items[player.current_room] is not None:
+            print(f"You see a \033[94m{items[player.current_room]}\033[0m in the room.")
 
         # Player input
         print('-----------------------------------------------------------------')
@@ -35,12 +35,12 @@ def vault166():
         # Process player's command
         if command.startswith("go "):
             direction = command[3:]
-            if direction in room_connections[current_room]:
-                current_room = room_connections[current_room][direction]
+            if direction in room_connections[player.current_room]:
+                player.current_room = room_connections[player.current_room][direction]
                 # Check if the player encounters Maradonyx
-                if current_room == "Chemical Room":
-                    print(rooms[current_room])
-                    if len(inventory) == 7 and current_room == 'Chemical Room':
+                if player.current_room == "Chemical Room":
+                    print(rooms[player.current_room])
+                    if len(player.inventory) == 7 and player.current_room == 'Chemical Room':
                         print("\033[93mCongratulations! You collected all the items and defeated Maradonyx.")
                         print("You win!\033[0m")
                         game_over = True
@@ -50,13 +50,13 @@ def vault166():
                         game_over = True
             else:
                 print("\033[91mYou can't go that way!\033[0m")
-                print(f'HINT: {room_connections[current_room]}')
+                print(f'HINT: {room_connections[player.current_room]}')
         elif command.startswith("get "):
             item = command[4:]
-            if items[current_room] == item:
-                inventory.append(item)
+            if items[player.current_room] == item:
+                player.inventory.append(item)
                 print("You picked up the\033[94m", item + "\033[0m.")
-                items[current_room] = None
+                items[player.current_room] = None
             else:
                 print("\033[91mThere is no item in the room.\033[0m")
         else:
