@@ -4,6 +4,8 @@ Created by Magdiel Rosario Orta
 21 June 2023
 '''
 
+from map import build_map
+
 # Function to show player welcome message and instructions
 def welcome():
     print('\033[94mWelcome to Vault 166 - Text Based Game\033[0m')
@@ -21,6 +23,7 @@ def vault166():
     current_room = "Vacuum Room"
     inventory = []
     game_over = False
+    rooms, room_connections, items = build_map()
 
     # Game Loop
     while not game_over:
