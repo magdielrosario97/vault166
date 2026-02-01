@@ -1,0 +1,141 @@
+Welcome to Vault 166 - Text Based Game
+-----------------------------------------------------------------
+Collect all 7 items and escape!
+To move: go north | go south | go east | go west
+To collect item: get item
+-----------------------------------------------------------------
+You moved to Vacuum Room
+You are in sealed vacuum room.
+Inventory: []
+-----------------------------------------------------------------
+Enter your command: go west
+-----------------------------------------------------------------
+You moved to Mechanical Room
+You entered a room with a tool box.
+Inventory: []
+You see a wrench in the room.
+-----------------------------------------------------------------
+Enter your command: get wrench
+-----------------------------------------------------------------
+You picked up the wrench.
+You moved to Mechanical Room
+You entered a room with a tool box.
+Inventory: ['wrench']
+-----------------------------------------------------------------
+Enter your command: go east
+-----------------------------------------------------------------
+You moved to Vacuum Room
+You are in sealed vacuum room.
+Inventory: ['wrench']
+-----------------------------------------------------------------
+Enter your command: go east
+-----------------------------------------------------------------
+You can't go that way!
+HINT: {'west': 'Mechanical Room', 'south': 'Decon Room'}       
+You moved to Vacuum Room
+You are in sealed vacuum room.
+Inventory: ['wrench']
+-----------------------------------------------------------------
+Enter your command: go south
+-----------------------------------------------------------------
+You moved to Decon Room
+You step in a room full of decon equipment.
+Inventory: ['wrench']
+You see a mask in the room.
+-----------------------------------------------------------------
+Enter your command: get mask
+-----------------------------------------------------------------
+You picked up the mask.
+You moved to Decon Room
+You step in a room full of decon equipment.
+Inventory: ['wrench', 'mask']
+-----------------------------------------------------------------
+Enter your command: go south
+-----------------------------------------------------------------
+You moved to Foyer
+You encounter the check in desk in an open wide room.
+Inventory: ['wrench', 'mask']
+You see a flashlight in the room.
+-----------------------------------------------------------------
+Enter your command: get flashlight
+-----------------------------------------------------------------
+You picked up the flashlight.
+You moved to Foyer
+You encounter the check in desk in an open wide room.
+Inventory: ['wrench', 'mask', 'flashlight']
+-----------------------------------------------------------------
+Enter your command: go west
+-----------------------------------------------------------------
+You moved to Security
+You come across a room full of security camera feed.
+Inventory: ['wrench', 'mask', 'flashlight']
+You see a key in the room.
+-----------------------------------------------------------------
+Enter your command: get key
+-----------------------------------------------------------------
+You picked up the key.
+You moved to Security
+You come across a room full of security camera feed.
+Inventory: ['wrench', 'mask', 'flashlight', 'key']
+-----------------------------------------------------------------
+Enter your command: go east
+-----------------------------------------------------------------
+You moved to Foyer
+You encounter the check in desk in an open wide room.
+Inventory: ['wrench', 'mask', 'flashlight', 'key']
+-----------------------------------------------------------------
+Enter your command: go east
+-----------------------------------------------------------------
+You moved to Experimental Room
+You walk into a bright white room full of prototypes.
+Inventory: ['wrench', 'mask', 'flashlight', 'key']
+You see a ice-blaster in the room.
+-----------------------------------------------------------------
+Enter your command: get ice-blaster
+-----------------------------------------------------------------
+You picked up the ice-blaster.
+You moved to Experimental Room
+You walk into a bright white room full of prototypes.
+Inventory: ['wrench', 'mask', 'flashlight', 'key', 'ice-blaster']
+-----------------------------------------------------------------
+Enter your command: go south
+-----------------------------------------------------------------
+You moved to Emergency Room
+You walk into an emergency room with electronic medical equipment.
+Inventory: ['wrench', 'mask', 'flashlight', 'key', 'ice-blaster']
+You see a battery in the room.
+-----------------------------------------------------------------
+Enter your command: get battery
+-----------------------------------------------------------------
+You picked up the battery.
+You moved to Emergency Room
+You walk into an emergency room with electronic medical equipment.
+Inventory: ['wrench', 'mask', 'flashlight', 'key', 'ice-blaster', 'battery']
+-----------------------------------------------------------------
+Enter your command: go south
+-----------------------------------------------------------------
+You can't go that way!
+HINT: {'west': 'Laboratory', 'north': 'Experimental Room'}     
+You moved to Emergency Room
+You walk into an emergency room with electronic medical equipment.
+Inventory: ['wrench', 'mask', 'flashlight', 'key', 'ice-blaster', 'battery']
+-----------------------------------------------------------------
+Enter your command: go west
+-----------------------------------------------------------------
+You moved to Laboratory
+You come into an extremely clean room.
+Inventory: ['wrench', 'mask', 'flashlight', 'key', 'ice-blaster', 'battery']
+You see a schematics in the room.
+-----------------------------------------------------------------
+Enter your command: get schematics
+-----------------------------------------------------------------
+You picked up the schematics.
+You moved to Laboratory
+You come into an extremely clean room.
+Inventory: ['wrench', 'mask', 'flashlight', 'key', 'ice-blaster', 'battery', 'schematics']
+-----------------------------------------------------------------
+Enter your command: go west
+-----------------------------------------------------------------
+You opened the door holding Maradonyx.
+Congratulations! You collected all the items and defeated Maradonyx.
+You win!
