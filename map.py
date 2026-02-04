@@ -1,41 +1,151 @@
+from room import Room
+
+
 def build_map():
-    # Define rooms into a dictionary holding the room name
+    # Create rooms (name, description, hazard, locked)
+    vault_entrance = Room(
+        "Vault Entrance",
+        "A reinforced vault door gives you access to the stale and gloomy entrance.",
+    )
+
+    decon = Room(
+        "Decon",
+        "You walk into a long decontamination chamber as warning lights flicker and silent vents line the walls.",
+    )
+
+    storage = Room(
+        "Storage",
+        "You step into a cluttered storage room filled with wrecked crates, collapsed shelves, and layers of dust.",
+    )
+
+    security = Room(
+        "Security",
+        "You enter a security room with dead monitors, overturned chairs, and control panels frozen in time.",
+    )
+
+    atrium = Room(
+        "Atrium",
+        "You step into a wide atrium that serves as the vault's central hub, with corridors branching off in every direction.",
+    )
+
+    east_wing = Room(
+        "East Wing",
+        "You walk down a long corridor leading toward the living areas, the air feeling quieter the farther you go.",
+    )
+
+    medical = Room(
+        "Medical",
+        "You step into an abandoned medical clinic where scattered supplies and overturned equipment suggest a rushed evacuation.",
+        locked=True,
+    )
+
+    cafeteria = Room(
+        "Cafeteria",
+        "You enter a large cafeteria with long tables and a silent kitchen, the stillness making the space feel uneasy.",
+    )
+
+    living_quarters = Room(
+        "Living Quarters",
+        "You walk into the living quarters where personal belongings remain scattered across empty dorm rooms.",
+    )
+
+    emergency_response = Room(
+        "Emergency Response",
+        "You step into an emergency response area lined with equipment racks and faded instructions on the walls.",
+        locked=True,
+    )
+
+    armory = Room(
+        "Armory",
+        "You enter a reinforced armory where weapon racks and protective gear sit locked away behind heavy barriers.",
+        locked=True,
+    )
+
+    west_wing = Room(
+        "West Wing",
+        "You walk into a corridor marked with warning signs and lab symbols, hinting at dangerous work once done here.",
+    )
+
+    chemical = Room(
+        "Chemical",
+        "You step into a chemical storage area where broken containers and stained floors make the air burn your throat.",
+        hazard="gas",
+    )
+
+    experimental = Room(
+        "Experimental",
+        "You enter a ruined laboratory filled with shattered glass, damaged machinery, and failed experiments.",
+        hazard="radiation",
+    )
+
+    r_and_d = Room(
+        "Research & Development",
+        "You step into a secured research lab with dark terminals and locked workstations, hiding the vault's most sensitive projects.",
+        locked=True,
+    )
+
+    # Connect rooms
+    vault_entrance.connect("south", decon)
+
+    decon.connect("north", vault_entrance)
+    decon.connect("south", atrium)
+    decon.connect("west", storage)
+    decon.connect("east", security)
+
+    storage.connect("east", decon)
+    security.connect("west", decon)
+
+    atrium.connect("north", decon)
+    atrium.connect("west", west_wing)
+    atrium.connect("east", east_wing)
+    atrium.connect("south", emergency_response)
+
+    east_wing.connect("west", atrium)
+    east_wing.connect("north", medical)
+    east_wing.connect("south", cafeteria)
+    east_wing.connect("east", living_quarters)
+
+    medical.connect("south", east_wing)
+    cafeteria.connect("north", east_wing)
+    living_quarters.connect("west", east_wing)
+
+    west_wing.connect("east", atrium)
+    west_wing.connect("north", chemical)
+    west_wing.connect("south", experimental)
+    west_wing.connect("west", r_and_d)
+
+    chemical.connect("south", west_wing)
+    experimental.connect("north", west_wing)
+    r_and_d.connect("east", west_wing)
+
+    emergency_response.connect("north", atrium)
+    emergency_response.connect("south", armory)
+
+    armory.connect("north", emergency_response)
+
+    # Build rooms dict
     rooms = {
-        "Vacuum Room": "You are in sealed vacuum room.",
-        "Mechanical Room": "You entered a room with a tool box.",
-        "Decon Room": "You step in a room full of decon equipment.",
-        "Foyer": "You encounter the check in desk in an open wide room.",
-        "Security": "You come across a room full of security camera feed.",
-        "Experimental Room": "You walk into a bright white room full of prototypes.",
-        "Emergency Room": "You walk into an emergency room with electronic medical equipment.",
-        "Laboratory": "You come into an extremely clean room.",
-        "Chemical Room": "You opened the door holding Maradonyx."
+        vault_entrance.name: vault_entrance,
+        decon.name: decon,
+        storage.name: storage,
+        security.name: security,
+        atrium.name: atrium,
+        east_wing.name: east_wing,
+        medical.name: medical,
+        cafeteria.name: cafeteria,
+        living_quarters.name: living_quarters,
+        emergency_response.name: emergency_response,
+        armory.name: armory,
+        west_wing.name: west_wing,
+        chemical.name: chemical,
+        experimental.name: experimental,
+        r_and_d.name: r_and_d,
     }
 
-    # Define the connection of the rooms into a dictionary
-    room_connections = {
-        "Vacuum Room": {"west": "Mechanical Room", "south": "Decon Room"},
-        "Mechanical Room": {"east": "Vacuum Room"},
-        "Decon Room": {"north": "Vacuum Room", "south": "Foyer"},
-        "Foyer": {"north": "Decon Room", "south": "Laboratory", "west": "Security", "east": "Experimental Room"},
-        "Security": {"east": "Foyer"},
-        "Experimental Room": {"west": "Foyer", "south": "Emergency Room"},
-        "Emergency Room": {"west": "Laboratory", "north": "Experimental Room"},
-        "Laboratory": {"west": "Chemical Room", "north": "Foyer", "east": "Emergency Room"},
-        "Chemical Room": {"east": "Laboratory"}
-    }
+    # Temporary bridge so existing Game code can keep using room_connections
+    room_connections = {name: room.connections for name, room in rooms.items()}
 
-    # Define items into a dictionary with room_name: item
-    items = {
-        "Vacuum Room": None,  # Entrance
-        "Mechanical Room": "wrench",
-        "Decon Room": "mask",
-        "Foyer": "flashlight",
-        "Security": "key",
-        "Experimental Room": "ice-blaster",
-        "Emergency Room": "battery",
-        "Laboratory": "schematics",
-        "Chemical Room": None  # Maradonyx's Room
-    }
-    
+    # TODO: Currently empty for testing. Add proper items to each room
+    items = {name: None for name in rooms}
+
     return rooms, room_connections, items
