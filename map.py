@@ -152,9 +152,4 @@ def build_map():
         r_and_d.name: r_and_d,
     }
 
-    # Temporary bridge so existing Game code can keep using room_connections
-    room_connections = {name: room.connections for name, room in rooms.items()}
-
-    items = None
-
-    return rooms, room_connections, items
+    return rooms

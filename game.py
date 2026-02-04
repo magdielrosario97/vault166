@@ -5,7 +5,7 @@ from map import build_map
 class Game:
     def __init__(self):
         self.game_over = False
-        self.rooms, self.room_connections, _ = build_map()
+        self.rooms = build_map()
         self.player = Player(self.rooms["Vault Entrance"])
 
     def process_command(self, command: str) -> None:
