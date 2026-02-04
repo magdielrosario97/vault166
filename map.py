@@ -2,10 +2,10 @@ from room import Room
 
 
 def build_map():
-    # Create rooms (name, description, hazard, locked)
+    # Create rooms (name, description, item, hazard, locked)
     vault_entrance = Room(
         "Vault Entrance",
-        "A reinforced vault door gives you access to the stale and gloomy entrance.",
+        "You step through a massive reinforced door into a stale, dimly lit entrance where the outside world feels far away.",
     )
 
     decon = Room(
@@ -16,11 +16,13 @@ def build_map():
     storage = Room(
         "Storage",
         "You step into a cluttered storage room filled with wrecked crates, collapsed shelves, and layers of dust.",
+        item="flashlight",
     )
 
     security = Room(
         "Security",
         "You enter a security room with dead monitors, overturned chairs, and control panels frozen in time.",
+        item="id_tag",
     )
 
     atrium = Room(
@@ -37,28 +39,33 @@ def build_map():
         "Medical",
         "You step into an abandoned medical clinic where scattered supplies and overturned equipment suggest a rushed evacuation.",
         locked=True,
+        item="mask",
     )
 
     cafeteria = Room(
         "Cafeteria",
         "You enter a large cafeteria with long tables and a silent kitchen, the stillness making the space feel uneasy.",
+        item="note",
     )
 
     living_quarters = Room(
         "Living Quarters",
         "You walk into the living quarters where personal belongings remain scattered across empty dorm rooms.",
+        item="keycard",
     )
 
     emergency_response = Room(
         "Emergency Response",
         "You step into an emergency response area lined with equipment racks and faded instructions on the walls.",
         locked=True,
+        item="hazmat_suit",
     )
 
     armory = Room(
         "Armory",
         "You enter a reinforced armory where weapon racks and protective gear sit locked away behind heavy barriers.",
         locked=True,
+        item="radzapper",
     )
 
     west_wing = Room(
@@ -70,18 +77,21 @@ def build_map():
         "Chemical",
         "You step into a chemical storage area where broken containers and stained floors make the air burn your throat.",
         hazard="gas",
+        item="acid",
     )
 
     experimental = Room(
         "Experimental",
         "You enter a ruined laboratory filled with shattered glass, damaged machinery, and failed experiments.",
         hazard="radiation",
+        item="fusion_core",
     )
 
     r_and_d = Room(
         "Research & Development",
         "You step into a secured research lab with dark terminals and locked workstations, hiding the vault's most sensitive projects.",
         locked=True,
+        item="schematics",
     )
 
     # Connect rooms
@@ -145,7 +155,6 @@ def build_map():
     # Temporary bridge so existing Game code can keep using room_connections
     room_connections = {name: room.connections for name, room in rooms.items()}
 
-    # TODO: Currently empty for testing. Add proper items to each room
-    items = {name: None for name in rooms}
+    items = None
 
     return rooms, room_connections, items

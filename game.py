@@ -5,7 +5,7 @@ from map import build_map
 class Game:
     def __init__(self):
         self.game_over = False
-        self.rooms, self.room_connections, self.items = build_map()
+        self.rooms, self.room_connections, _ = build_map()
         self.player = Player(self.rooms["Vault Entrance"])
 
     def process_command(self, command: str) -> None:
@@ -39,10 +39,10 @@ class Game:
                 print(f"HINT: {pretty}")
         elif command.startswith("get "):
             item = command[4:]
-            if self.items[current_room.name] == item:
+            if current_room.item == item:
                 self.player.inventory.append(item)
                 print("You picked up the\033[94m", item + "\033[0m.")
-                self.items[current_room.name] = None
+                current_room.item = None
             else:
                 print("\033[91mThere is no item in the room.\033[0m")
         else:
@@ -56,9 +56,9 @@ class Game:
             # Display player's inventory
             print("Inventory:", self.player.inventory)
             # Check if the current room contains an item
-            room_name = self.player.current_room.name
-            if self.items[room_name] is not None:
-                print(f"You see a \033[94m{self.items[room_name]}\033[0m in the room.")
+            current_room = self.player.current_room
+            if current_room.item is not None:
+                print(f"You see a \033[94m{current_room.item}\033[0m in the room.")
             # Player input
             print("-----------------------------------------------------------------")
             command = input("Enter your command: ")
