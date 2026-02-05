@@ -28,6 +28,7 @@ def build_map():
     atrium = Room(
         "Atrium",
         "You step into a wide atrium that serves as the vault's central hub, with corridors branching off in every direction.",
+        dark=True,
     )
 
     east_wing = Room(
