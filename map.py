@@ -22,6 +22,7 @@ def build_map():
     security = Room(
         "Security",
         "You enter a security room with dead monitors, overturned chairs, and control panels frozen in time.",
+        locked=True,
         item="id_tag",
     )
 
@@ -65,7 +66,6 @@ def build_map():
     armory = Room(
         "Armory",
         "You enter a reinforced armory where weapon racks and protective gear sit locked away behind heavy barriers.",
-        locked=True,
         item="radzapper",
     )
 

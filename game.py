@@ -1,13 +1,13 @@
 from player import Player
 from map import build_map
-
-BOSS_ITEMS = {
-    "radzapper",
-    "mask",
-    "hazmat_suit",
-    "fusion_core",
-    "id_tag",
-}
+from rules import (
+    blocked_by_darkness,
+    blocked_by_lock,
+    boss_room,
+    has_boss_items,
+    hazard_damage,
+    DAMAGE,
+)
 
 
 class Game:
@@ -19,15 +19,56 @@ class Game:
     def _handle_move(self, direction: str) -> None:
         current_room = self.player.current_room
 
-        # Valid move
-        if direction in current_room.connections:
-            self.player.current_room = current_room.connections[direction]
-            current_room = self.player.current_room
-            if self._handle_boss(current_room):
-                return
-        else:
+        # Invalid move
+        if direction not in current_room.connections:
             print("\033[91mYou can't go that way!\033[0m")
             self._print_hint(current_room)
+            return
+
+        next_room = current_room.connections[direction]
+
+        # Darkness blocks and also hurts
+        if blocked_by_darkness(self.player, next_room):
+            self.player.take_damage(DAMAGE)
+            print("\033[91mIt is too dark. You trip and fall.\033[0m")
+            print(f"\033[91m-{DAMAGE} health\033[0m")
+            if not self.player.is_alive():
+                print("\033[91mYou collapsed. Game over!\033[0m")
+                self.game_over = True
+            return
+
+        # Locks block entry
+        if blocked_by_lock(self.player, next_room):
+            print("\033[91mThe door is locked. You need a keycard.\033[0m")
+            return
+
+        # Move into the room
+        self.player.current_room = next_room
+        current_room = self.player.current_room
+
+        # Boss room check
+        if boss_room(current_room):
+            print(current_room.description)
+            if has_boss_items(self.player):
+                print(
+                    "\033[93mCongratulations! You encountered and defeated Maradonyx.\033[0m"
+                )
+                print("You win!\033[0m")
+            else:
+                print("\033[91mYou encountered Maradonyx unprepared. Game over!\033[0m")
+            self.game_over = True
+            return
+
+        # Environmental hazards
+        damage = hazard_damage(self.player, current_room)
+        if damage:
+            self.player.take_damage(damage)
+            print("\033[91mThe environment harms you.\033[0m")
+            print(f"\033[91m-{damage} health\033[0m")
+            if not self.player.is_alive():
+                print("\033[91mYou collapsed. Game over!\033[0m")
+                self.game_over = True
+                return
 
     def _handle_get(self, item: str) -> None:
         current_room = self.player.current_room
@@ -38,26 +79,6 @@ class Game:
             current_room.item = None
         else:
             print("\033[91mThere is no item in the room.\033[0m")
-
-    def _handle_boss(self, room) -> bool:
-        if room.name != "Research & Development":
-            return False
-
-        print(room.description)
-
-        # TODO: Temporary boss check. Rework with hazard system.
-        missing = BOSS_ITEMS - self.player.inventory
-        if not missing:
-            print("\033[93mCongratulations! You encountered and defeated Maradonyx.")
-            print("You win!\033[0m")
-        else:
-            print(
-                "\033[91mYou encountered Maradonyx before collecting the required items."
-            )
-            print("Game over!\033[0m")
-
-        self.game_over = True
-        return True
 
     def _print_hint(self, room) -> None:
         # TODO: Temporary bridge. Rework hint logic.
@@ -83,6 +104,7 @@ class Game:
             print(self.player.current_room.description)
             # Display player's inventory
             print("Inventory:", list(self.player.inventory))
+            print("Health:", self.player.health)
             # Check if the current room contains an item
             current_room = self.player.current_room
             if current_room.item is not None:
