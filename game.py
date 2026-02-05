@@ -1,6 +1,14 @@
 from player import Player
 from map import build_map
 
+BOSS_ITEMS = {
+    "radzapper",
+    "mask",
+    "hazmat_suit",
+    "fusion_core",
+    "id_tag",
+}
+
 
 class Game:
     def __init__(self):
@@ -35,17 +43,19 @@ class Game:
             return
 
         print(room.description)
+
         # TODO: Temporary boss check. Rework with hazard system.
-        if len(self.player.inventory) == 7:
-            print(
-                "\033[93mCongratulations! You collected all the items and defeated Maradonyx."
-            )
+        missing = BOSS_ITEMS - self.player.inventory
+        if not missing:
+            print("\033[93mCongratulations! You encountered and defeated Maradonyx.")
             print("You win!\033[0m")
-            self.game_over = True
         else:
-            print("\033[91mYou encountered Maradonyx before collecting all the items.")
+            print(
+                "\033[91mYou encountered Maradonyx before collecting the required items."
+            )
             print("Game over!\033[0m")
-            self.game_over = True
+
+        self.game_over = True
 
     def _print_hint(self, room) -> None:
         # TODO: Temporary bridge. Rework hint logic.
