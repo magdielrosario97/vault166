@@ -23,7 +23,8 @@ class Game:
         if direction in current_room.connections:
             self.player.current_room = current_room.connections[direction]
             current_room = self.player.current_room
-            self._handle_boss(current_room)
+            if self._handle_boss(current_room):
+                return
         else:
             print("\033[91mYou can't go that way!\033[0m")
             self._print_hint(current_room)
@@ -38,9 +39,9 @@ class Game:
         else:
             print("\033[91mThere is no item in the room.\033[0m")
 
-    def _handle_boss(self, room) -> None:
+    def _handle_boss(self, room) -> bool:
         if room.name != "Research & Development":
-            return
+            return False
 
         print(room.description)
 
@@ -56,6 +57,7 @@ class Game:
             print("Game over!\033[0m")
 
         self.game_over = True
+        return True
 
     def _print_hint(self, room) -> None:
         # TODO: Temporary bridge. Rework hint logic.
