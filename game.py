@@ -8,51 +8,57 @@ class Game:
         self.rooms = build_map()
         self.player = Player(self.rooms["Vault Entrance"])
 
-    def process_command(self, command: str) -> None:
+    def _handle_move(self, direction: str) -> None:
         current_room = self.player.current_room
 
+        # Valid move
+        if direction in current_room.connections:
+            self.player.current_room = current_room.connections[direction]
+            current_room = self.player.current_room
+            # TODO: Temporary boss check. Rework with hazard system.
+            if current_room.name == "Research & Development":
+                print(current_room.description)
+                if len(self.player.inventory) == 7:
+                    print(
+                        "\033[93mCongratulations! You collected all the items and defeated Maradonyx."
+                    )
+                    print("You win!\033[0m")
+                    self.game_over = True
+                else:
+                    print(
+                        "\033[91mYou encountered Maradonyx before collecting all the items."
+                    )
+                    print("Game over!\033[0m")
+                    self.game_over = True
+        else:
+            print("\033[91mYou can't go that way!\033[0m")
+            self._print_hint(current_room)
+
+    def _handle_get(self, item: str) -> None:
+        current_room = self.player.current_room
+
+        if current_room.item == item:
+            self.player.inventory.add(item)
+            print("You picked up the\033[94m", item + "\033[0m.")
+            current_room.item = None
+        else:
+            print("\033[91mThere is no item in the room.\033[0m")
+
+    def _print_hint(self, room) -> None:
+        # TODO: Temporary bridge. Rework hint logic.
+        pretty = {d: r.name for d, r in room.connections.items()}
+        print(f"HINT: {pretty}")
+
+    def process_command(self, command: str) -> None:
         # Movement
         if command.startswith("go "):
             direction = command[3:]
-
-            # Valid move
-            if direction in current_room.connections:
-                self.player.current_room = current_room.connections[direction]
-                current_room = self.player.current_room
-
-                # TODO: Temporary boss check. Rework with hazard system.
-                if current_room.name == "Research & Development":
-                    print(current_room.description)
-
-                    if len(self.player.inventory) == 7:
-                        print(
-                            "\033[93mCongratulations! You collected all the items and defeated Maradonyx."
-                        )
-                        print("You win!\033[0m")
-                        self.game_over = True
-
-                    else:
-                        print(
-                            "\033[91mYou encountered Maradonyx before collecting all the items."
-                        )
-                        print("Game over!\033[0m")
-                        self.game_over = True
-
-            else:
-                print("\033[91mYou can't go that way!\033[0m")
-                # TODO: Temporary bridge. Rework hint logic.
-                pretty = {d: r.name for d, r in current_room.connections.items()}
-                print(f"HINT: {pretty}")
+            self._handle_move(direction)
 
         # Item collection
         elif command.startswith("get "):
             item = command[4:]
-            if current_room.item == item:
-                self.player.inventory.add(item)
-                print("You picked up the\033[94m", item + "\033[0m.")
-                current_room.item = None
-            else:
-                print("\033[91mThere is no item in the room.\033[0m")
+            self._handle_get(item)
 
         else:
             print("\033[91mInvalid command!\033[0m")
