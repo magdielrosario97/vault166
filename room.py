@@ -5,6 +5,7 @@ class Room:
         description: str,
         hazard: str | None = None,
         locked: bool = False,
+        dark: bool = False,
         item: str | None = None,
     ):
 
@@ -12,6 +13,7 @@ class Room:
         self.description = description
         self.hazard = hazard
         self.locked = locked
+        self.dark = dark
         self.item = item
         self.connections: dict[str, "Room"] = {}
 
