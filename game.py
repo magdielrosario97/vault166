@@ -15,21 +15,7 @@ class Game:
         if direction in current_room.connections:
             self.player.current_room = current_room.connections[direction]
             current_room = self.player.current_room
-            # TODO: Temporary boss check. Rework with hazard system.
-            if current_room.name == "Research & Development":
-                print(current_room.description)
-                if len(self.player.inventory) == 7:
-                    print(
-                        "\033[93mCongratulations! You collected all the items and defeated Maradonyx."
-                    )
-                    print("You win!\033[0m")
-                    self.game_over = True
-                else:
-                    print(
-                        "\033[91mYou encountered Maradonyx before collecting all the items."
-                    )
-                    print("Game over!\033[0m")
-                    self.game_over = True
+            self._handle_boss(current_room)
         else:
             print("\033[91mYou can't go that way!\033[0m")
             self._print_hint(current_room)
@@ -44,6 +30,23 @@ class Game:
         else:
             print("\033[91mThere is no item in the room.\033[0m")
 
+    def _handle_boss(self, room) -> None:
+        if room.name != "Research & Development":
+            return
+
+        print(room.description)
+        # TODO: Temporary boss check. Rework with hazard system.
+        if len(self.player.inventory) == 7:
+            print(
+                "\033[93mCongratulations! You collected all the items and defeated Maradonyx."
+            )
+            print("You win!\033[0m")
+            self.game_over = True
+        else:
+            print("\033[91mYou encountered Maradonyx before collecting all the items.")
+            print("Game over!\033[0m")
+            self.game_over = True
+
     def _print_hint(self, room) -> None:
         # TODO: Temporary bridge. Rework hint logic.
         pretty = {d: r.name for d, r in room.connections.items()}
@@ -54,12 +57,10 @@ class Game:
         if command.startswith("go "):
             direction = command[3:]
             self._handle_move(direction)
-
         # Item collection
         elif command.startswith("get "):
             item = command[4:]
             self._handle_get(item)
-
         else:
             print("\033[91mInvalid command!\033[0m")
 
