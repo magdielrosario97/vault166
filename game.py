@@ -39,7 +39,12 @@ class Game:
 
         # Locks block entry
         if blocked_by_lock(self.player, next_room):
-            print("\033[91mThe door is locked. You need a keycard.\033[0m")
+            if next_room.name == "Armory":
+                print(
+                    "\033[91mThe Armory lock is seized. Maybe something can melt it.\033[0m"
+                )
+            else:
+                print("\033[91mThe door is locked. You need a keycard.\033[0m")
             return
 
         # Move into the room
