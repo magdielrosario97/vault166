@@ -2,7 +2,7 @@ from room import Room
 
 
 def build_map():
-    # Create rooms (name, description, item, hazard, locked)
+    # Create rooms (name, description, hazard, locked, dark, item)
     vault_entrance = Room(
         "Vault Entrance",
         "You step through a massive reinforced door into a stale, dimly lit entrance where the outside world feels far away.",
@@ -46,8 +46,7 @@ def build_map():
 
     cafeteria = Room(
         "Cafeteria",
-        "You enter a large cafeteria with long tables and a silent kitchen, the stillness making the space feel uneasy.",
-        item="note",
+        "You enter a large cafeteria with long tables and a silent kitchen. A note on the counter mentions that acid can melt the Armory lock.",
     )
 
     living_quarters = Room(
@@ -66,33 +65,34 @@ def build_map():
     armory = Room(
         "Armory",
         "You enter a reinforced armory where weapon racks and protective gear sit locked away behind heavy barriers.",
+        locked=True,
         item="radzapper",
     )
 
     west_wing = Room(
         "West Wing",
         "You walk into a corridor marked with warning signs and lab symbols, hinting at dangerous work once done here.",
+        hazard="gas",
     )
 
     chemical = Room(
         "Chemical",
         "You step into a chemical storage area where broken containers and stained floors make the air burn your throat.",
-        hazard="gas",
+        hazard="radiation",
         item="acid",
     )
 
     experimental = Room(
         "Experimental",
         "You enter a ruined laboratory filled with shattered glass, damaged machinery, and failed experiments.",
-        hazard="radiation",
+        hazard="gas",
         item="fusion_core",
     )
 
     r_and_d = Room(
         "Research & Development",
-        "You step into a secured research lab with dark terminals and locked workstations, hiding the vault's most sensitive projects.",
+        "You step into a secured research lab with dark terminals and locked workstations, hiding the vault's most sensitive project.",
         locked=True,
-        item="schematics",
     )
 
     # Connect rooms
