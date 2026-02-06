@@ -99,14 +99,17 @@ class Game:
 
     def run(self):
         while not self.game_over:
+            current_room = self.player.current_room
             # Display current room description
-            print(f"\033[92mYou moved to {self.player.current_room.name}\033[0m")
-            print(self.player.current_room.description)
+            print(f"\033[92mYou moved to {current_room.name}\033[0m")
+            print(current_room.description)
+            if current_room.note and not current_room.read_note:
+                print(current_room.note)
+                current_room.read_note = True
             # Display player's inventory
             print("Inventory:", list(self.player.inventory))
             print("Health:", self.player.health)
             # Check if the current room contains an item
-            current_room = self.player.current_room
             if current_room.item is not None:
                 print(f"You see a \033[94m{current_room.item}\033[0m in the room.")
             # Player input

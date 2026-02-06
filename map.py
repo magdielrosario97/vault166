@@ -46,7 +46,22 @@ def build_map():
 
     cafeteria = Room(
         "Cafeteria",
-        "You enter a large cafeteria with long tables and a silent kitchen. A note on the counter mentions that acid can melt the Armory lock.",
+        "You enter a large cafeteria with long tables and a silent kitchen. A note is taped to the counter.",
+        note=(
+            "Most of us never made it past the West Wing.\n\n"
+            "If you're reading this, you need to be prepared before going any farther.\n\n"
+            "The gas leaks in the lower storage areas will choke you without a proper mask. "
+            "Radiation in the labs is worse. A mask helps, but you'll need a full HAZMAT suit "
+            "to survive prolonged exposure.\n\n"
+            "The Armory was sealed after the incident. Keycards won't open it anymore. "
+            "The locking mechanism corrodes easily though. Acid should melt it down if you can "
+            "get your hands on some.\n\n"
+            "Whatever is in Research & Development can't be stopped by weapons alone. "
+            "The Radzapper was designed to work only when fully powered and stabilized. "
+            "Without the fusion core, identification tag, and proper protection, you are dead meat.\n\n"
+            "They said the device was untested.\n\n"
+            "If you're going in there, make sure you have everything. There won't be a second chance."
+        ),
     )
 
     living_quarters = Room(

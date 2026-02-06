@@ -5,6 +5,7 @@ DAMAGE = 25
 
 FLASHLIGHT = "flashlight"
 KEYCARD = "keycard"
+ACID = "acid"
 
 HAZARD_REQUIREMENTS: dict[str, set[str]] = {
     "gas": {"mask"},
@@ -25,6 +26,9 @@ def blocked_by_darkness(player: Player, room: Room) -> bool:
 
 
 def blocked_by_lock(player: Player, room: Room) -> bool:
+    if room.name == "Armory":
+        return ACID not in player.inventory
+
     return room.locked and KEYCARD not in player.inventory
 
 

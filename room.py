@@ -7,6 +7,7 @@ class Room:
         locked: bool = False,
         dark: bool = False,
         item: str | None = None,
+        note: str | None = None,
     ):
 
         self.name = name
@@ -15,6 +16,8 @@ class Room:
         self.locked = locked
         self.dark = dark
         self.item = item
+        self.note = note
+        self.read_note = False
         self.connections: dict[str, "Room"] = {}
 
     def connect(self, direction: str, room: "Room") -> None:
