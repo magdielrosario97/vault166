@@ -56,9 +56,13 @@ class Game:
             print(current_room.description)
             if has_boss_items(self.player):
                 print(
-                    "\033[93mCongratulations! You encountered and defeated Maradonyx.\033[0m"
+                    "\033[93mCongratulations! You encountered and defeated Maradonyx."
+                )
+                print(
+                    "With the threat neutralized, you recover the schematics and make your way out of Vault 166."
                 )
                 print("You win!\033[0m")
+
             else:
                 print("\033[91mYou encountered Maradonyx unprepared. Game over!\033[0m")
             self.game_over = True
