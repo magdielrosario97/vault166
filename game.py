@@ -1,5 +1,6 @@
 from player import Player
 from map import build_map
+from input_parser import InputParser
 from rules import (
     blocked_by_darkness,
     blocked_by_lock,
@@ -15,6 +16,9 @@ class Game:
         self.game_over = False
         self.rooms = build_map()
         self.player = Player(self.rooms["Vault Entrance"])
+
+        valid_items = {room.item for room in self.rooms.values() if room.item}
+        self.parser = InputParser(valid_items, 2)
 
     def _handle_move(self, direction: str) -> None:
         current_room = self.player.current_room
@@ -95,16 +99,22 @@ class Game:
         print(f"HINT: {pretty}")
 
     def process_command(self, command: str) -> None:
-        # Movement
-        if command.startswith("go "):
-            direction = command[3:]
-            self._handle_move(direction)
-        # Item collection
-        elif command.startswith("get "):
-            item = command[4:]
-            self._handle_get(item)
+        action, value = self.parser.parse(command)
+        print(action, value)
+
+    def process_command(self, command: str) -> None:
+        action, value = self.parser.parse(command)
+
+        if action == "move":
+            self._handle_move(value)
+        elif action == "get":
+            self._handle_get(value)
+        elif action == "map":
+            print("TODO: show map")
+        elif action == "help":
+            print("Commands: go <direction>, get <item>, map, help")
         else:
-            print("\033[91mInvalid command!\033[0m")
+            print(f"\033[91m{value}\033[0m")
 
     def run(self):
         while not self.game_over:
