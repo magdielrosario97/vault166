@@ -169,3 +169,34 @@ def build_map():
     }
 
     return rooms
+
+
+def print_map():
+    print(
+        """
+          Vault 166 Map (North is up)
+                    [VE]
+              [ST]  [DE]  [SE]
+              [CH]        [MD]
+        [RD]  [WW]  [AT]  [EW]  [LQ]
+              [EX]  [ER]  [CF]
+                    [AR]
+
+        Legend:
+        VE: Vault Entrance
+        DE: Decon
+        ST: Storage
+        SE: Security
+        AT: Atrium
+        EW: East Wing
+        MD: Medical
+        LQ: Living Quarters
+        ER: Emergency Response
+        CF: Cafeteria
+        AR: Armory
+        WW: West Wing
+        CH: Chemical
+        EX: Experimental
+        RD: Research & Development
+    """
+    )

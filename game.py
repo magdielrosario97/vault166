@@ -1,5 +1,5 @@
 from player import Player
-from map import build_map
+from map import build_map, print_map
 from input_parser import InputParser
 from rules import (
     blocked_by_darkness,
@@ -26,7 +26,6 @@ class Game:
         # Invalid move
         if direction not in current_room.connections:
             print("\033[91mYou can't go that way!\033[0m")
-            self._print_hint(current_room)
             return
 
         next_room = current_room.connections[direction]
@@ -93,15 +92,6 @@ class Game:
         else:
             print("\033[91mThere is no item in the room.\033[0m")
 
-    def _print_hint(self, room) -> None:
-        # TODO: Temporary bridge. Rework hint logic.
-        pretty = {d: r.name for d, r in room.connections.items()}
-        print(f"HINT: {pretty}")
-
-    def process_command(self, command: str) -> None:
-        action, value = self.parser.parse(command)
-        print(action, value)
-
     def process_command(self, command: str) -> None:
         action, value = self.parser.parse(command)
 
@@ -110,7 +100,7 @@ class Game:
         elif action == "get":
             self._handle_get(value)
         elif action == "map":
-            print("TODO: show map")
+            print_map()
         elif action == "help":
             print("Commands: go <direction>, get <item>, map, help")
         else:
