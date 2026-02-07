@@ -54,7 +54,10 @@ class InputParser:
         if verb == "help":
             return "help", None
 
-        return "invalid", "Use 'go <direction>' or 'get <item>'."
+        if verb in {"exit", "quit"}:
+            return "exit", None
+
+        return "invalid", "Unknown command. Type 'help' to see available commands."
 
     def tokenize(self, raw: str) -> list[str]:
         raw = raw.lower().strip()

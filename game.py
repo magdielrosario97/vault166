@@ -102,7 +102,10 @@ class Game:
         elif action == "map":
             print_map()
         elif action == "help":
-            print("Commands: go <direction>, get <item>, map, help")
+            print("Commands: go <direction>, get <item>, map, help, exit/quit")
+        elif action == "exit":
+            print("Exiting game... Thanks for playing Vault 166!")
+            self.game_over = True
         else:
             print(f"\033[91m{value}\033[0m")
 
