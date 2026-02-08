@@ -1,36 +1,46 @@
 # Vault 166 Architecture
 
-This document describes the current structure of Vault 166 during the Software Engineering and Design enhancement.
+This document describes the current architecture of Vault 166 following the Software Engineering and Design enhancement.
 
-The goal of this enhancement is to improve code organization and separation of concerns while keeping gameplay behavior the same.
+The goal of this enhancement was to improve code organization, separation of concerns, and maintainability while preserving the core gameplay experience.
 
-## Current focus
+## Architectural Focus
 
-At this stage, the project is being refactored from a single-script implementation into a modular structure.
+The project has been refactored from an earlier single-script implementation into a modular structure with clearly defined responsibilities.
 
 The refactor focuses on:
 
-- separating the game loop from supporting logic
-- centralizing player state
-- isolating world data from gameplay rules
+- separating the main game loop from supporting logic
+- centralizing player state and inventory management
+- isolating gameplay rules from control flow
+- improving input handling and command normalization
 
 ## Modules
 
-- Entry file  
-  Starts the game and invokes the main loop.
+- Entry file (`vault166.py`)  
+  Acts as the program entry point and starts the game loop.
 
-- game.py  
-  Will own the main game loop and command processing.
+- `game.py`  
+  Owns the main game loop, command dispatch, and output flow.
 
-- player.py  
-  Will store player-related state such as current room and inventory.
+- `input_parser.py`  
+  Handles command parsing, normalization, alias resolution, and ambiguity detection.
 
-- map.py  
-  Will store world data including rooms, connections, and items.
+- `player.py`  
+  Stores player-related state such as current room, inventory, and health.
 
-- utils.py  
-  Will contain shared output helpers.
+- `room.py`  
+  Defines room state and properties, including connections, hazards, and items.
+
+- `rules.py`  
+  Encapsulates gameplay rules such as environmental hazards, locked areas, and boss conditions.
+
+- `map.py`  
+  Defines the vault layout and provides a static minimap reference.
+
+- `utils.py`  
+  Contains shared output helpers and formatting utilities.
 
 ## Scope
 
-This document reflects the current refactor work only. Gameplay systems and features are not being changed as part of this enhancement.
+This architecture reflects the current implemented design. Gameplay mechanics were not fundamentally altered, but usability, input handling, and internal structure were improved to support clarity, extensibility, and maintainability.

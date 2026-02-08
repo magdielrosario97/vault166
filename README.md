@@ -1,69 +1,55 @@
-# Vault 166: Text-Based Survival Game
+### Project Overview
 
-Vault 166 is a text-based survival game concept focused on exploration, environmental storytelling, and progression through a sealed underground vault. The project is inspired by the Fallout series and is designed to grow over time as new gameplay systems are introduced.
+Vault 166 is a text-based adventure game written in Python that emphasizes modular design, clear game flow, and rule-based decision making. The project was originally developed as a course assignment and has since been enhanced as part of a capstone project to better demonstrate software engineering principles, algorithmic thinking, and maintainable architecture.
 
-This README describes the narrative and design foundation of Vault 166. Some gameplay systems and mechanics outlined here are planned and will be implemented incrementally as the project evolves.
+Players explore a vault environment, collect critical items, survive environmental hazards, and ultimately confront a final threat. The game prioritizes clarity of interaction, predictable command handling, and readable output within a terminal interface.
 
-## Story Foundation
+### Key Features
 
-### Theme and Basic Storyline
+- Text-based exploration with directional movement
+- Centralized game loop with clear command dispatch
+- Modular input parsing with command normalization
+- Rule-based movement restrictions and hazard evaluation
+- Inventory management using efficient data structures
+- Optional in-game map and help commands
+- Clean exit handling without relying on keyboard interruption
 
-Genre: Survival
+### Architecture Overview
 
-In a nuclear wasteland, you are the first wanderer to come across Vault 166, a vault that has been sealed for over 50 years. Vault 166 was originally used for experimental research involving weapons, tools, and other resources. Over time, rumors began to surface about schematics capable of removing radiation entirely.
+The project is organized into distinct modules, each responsible for a specific aspect of the game:
 
-The vault was ultimately abandoned after an experiment went wrong. What remains inside is unstable, dangerous, and largely unexplored.
+- `game.py`: Controls the main game loop, command processing, and output flow
+- `input_parser.py`: Normalizes and validates player input using tokenization, alias mapping, and prefix matching
+- `rules.py`: Encapsulates gameplay rules such as hazards, locked areas, and boss conditions
+- `map.py`: Builds the room graph and provides a static minimap reference
+- `room.py`: Defines room state and properties
+- `player.py`: Tracks player state including inventory and health
+- `utils.py`: Handles shared output helpers and formatting
+- `vault166.py`: Entry point for running the game
 
-The player’s goal is to explore the vault, uncover what happened within its walls, and locate the schematics hidden deep inside.
+This separation allows gameplay rules and user interaction logic to evolve independently, improving maintainability and readability.
 
-### Design Intent
+### Gameplay Flow
 
-The game is designed around exploration and discovery rather than fast-paced action. Progression is intended to be driven by navigating the environment, uncovering information, and unlocking restricted areas through items and knowledge gained along the way. Gameplay systems are planned to be introduced gradually as the project expands.
+- The game begins in the Vault Entrance, displaying an initial room description.
+- A status summary showing player and room information is displayed every turn.
+- Full room descriptions are shown only when entering a room or at game start.
+- Commands such as `map` and `help` provide information without disrupting player context.
+- The game ends when the player exits, is defeated, or completes the final encounter.
 
-## Vault Layout and Rooms
+### Running the Game
 
-Vault 166 is structured around a central Atrium with multiple connected wings and restricted areas. The layout is designed to encourage exploration, backtracking, and a growing understanding of the vault’s history.
+```bash
+python vault166.py
+```
 
-Planned rooms include:
+### Controls
 
-- Vault Entrance
-- Decontamination Room
-- Storage Room
-- Security
-- Atrium
-- Experimental Room
-- Chemical Room
-- Laboratory
-- Medical Room
-- Living Quarters
-- Cafeteria
-- Research & Development
-
-Not all rooms or associated mechanics are implemented in the current build. This layout serves as the foundation for future development.
-
-## Items
-
-Items are intended to play a central role in progression and access throughout the vault. Many items are designed to unlock restricted areas or provide protection from environmental threats.
-
-Planned items include:
-
-- Flashlight
-- ID Tag
-- Keycard
-- Mask
-- HAZMAT Suit
-- Fusion Core
-- Schematics
-
-Specific item behavior and interactions will be implemented as the game continues to evolve.
-
-## Antagonist
-
-Maradonyx
-
-The collapse of Vault 166 is tied to a failed experiment that resulted in Maradonyx, a radiation-powered fusion entity sustained by the vault’s lingering contamination. Its existence explains both the abandonment of the vault and the dangers that remain inside.
-
-Maradonyx serves primarily as a narrative anchor for the vault’s history and long-term threats. Details surrounding encounters or direct interaction are planned for later stages of development.
+- `go <direction>`: Move in a direction (supports short and partial forms)
+- `get <item>`: Pick up an item in the current room
+- `map`: Display a compact vault map
+- `help`: Display available commands
+- `exit` or `quit`: End the game safely
 
 ## Map Design
 
