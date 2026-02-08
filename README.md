@@ -11,7 +11,7 @@ Players explore a vault environment, collect critical items, survive environment
 - Modular input parsing with command normalization
 - Rule-based movement restrictions and hazard evaluation
 - Inventory management using efficient data structures
-- Optional in-game map and help commands
+- In-game map and help commands
 - Clean exit handling without relying on keyboard interruption
 
 ### Architecture Overview
@@ -53,6 +53,23 @@ python vault166.py
 
 ## Map Design
 
-The following map represents the intended layout and structure of Vault 166. It acts as a reference for world design and progression planning rather than a direct reflection of current gameplay.
+Vault 166 includes an in-game minimap that can be displayed at any time using the `map` command.
 
-![Map](vault166_map.jpg)
+The minimap is a simplified, fixed-orientation ASCII representation of the vault layout. It is intended to provide spatial awareness without revealing gameplay mechanics such as locked doors, hazards, or item locations.
+
+North is always oriented at the top of the map, and room abbreviations are explained using a legend printed alongside the map.
+
+Example:
+
+```
+Vault 166 Map (North is up)
+             [VE]
+             |  |
+       [ST]--[DE]--[SE]
+             |  |
+       [CH]  |  |  [MD]
+   [RD][WW]--[AT]--[EW][LQ]
+       [EX]  |  |  [CF]
+             [ER]
+             [AR]
+```

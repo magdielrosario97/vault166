@@ -182,7 +182,7 @@ def print_map() -> None:
               [ST]--[DE]--[SE]
                     |  |
               [CH]  |  |  [MD]
-        [RD]--[WW]--[AT]--[EW][LQ]
+          [RD][WW]--[AT]--[EW][LQ]
               [EX]  |  |  [CF]
                     [ER]
                     [AR]
