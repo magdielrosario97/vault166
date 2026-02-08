@@ -1,8 +1,6 @@
 import string
 
-VALID_COMMANDS = ["go", "get", "map", "help"]
 VALID_DIRECTIONS = ["north", "south", "east", "west"]
-
 DIRECTION_ALIASES = {
     "u": "north",
     "up": "north",
@@ -20,11 +18,16 @@ DIRECTION_ALIASES = {
 
 
 class InputParser:
-    def __init__(self, valid_items: set[str], min_item_chars: int):
+    """Parses player input into game commands and arguments."""
+
+    def __init__(self, valid_items: set[str], min_item_chars: int = 2):
         self.valid_items = valid_items
         self.min_item_chars = min_item_chars
 
-    def parse(self, raw: str):
+    def parse(self, raw: str) -> tuple[str, str | None]:
+        """
+        Parses raw input and returns a tuple of (action, argument) or (action, None).
+        """
         tokens = self.tokenize(raw)
 
         if not tokens:
@@ -60,6 +63,7 @@ class InputParser:
         return "invalid", "Unknown command. Type 'help' to see available commands."
 
     def tokenize(self, raw: str) -> list[str]:
+        """Converts raw input into a list of cleaned tokens."""
         raw = raw.lower().strip()
         if not raw:
             return []
@@ -72,6 +76,7 @@ class InputParser:
         return tokens
 
     def normalize_direction(self, in_direction: str) -> str | None:
+        """Converts input direction to a valid direction or returns None if invalid."""
         if in_direction in DIRECTION_ALIASES:
             return DIRECTION_ALIASES[in_direction]
 
@@ -86,6 +91,7 @@ class InputParser:
         return None
 
     def normalize_item(self, in_item: str) -> str | None:
+        """Converts input item to a valid item or returns None if invalid or ambiguous."""
         if in_item in self.valid_items:
             return in_item
 

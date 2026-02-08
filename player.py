@@ -1,4 +1,6 @@
 class Player:
+    """Represents the player character, tracking their current location, inventory, and health."""
+
     def __init__(self, starting_room):
         self.current_room = starting_room
         self.inventory: set[str] = set()

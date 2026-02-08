@@ -1,3 +1,4 @@
+from utils import separator, GREEN, BLUE, RED, YELLOW, RESET
 from player import Player
 from map import build_map, print_map
 from input_parser import InputParser
@@ -12,6 +13,8 @@ from rules import (
 
 
 class Game:
+    """Main game class that manages the game state, player, and game loop."""
+
     def __init__(self):
         self.game_over = False
         self.rooms = build_map()
@@ -21,78 +24,93 @@ class Game:
         self.parser = InputParser(valid_items, 2)
 
     def _handle_move(self, direction: str) -> None:
+        """Handles player movement in the given direction, applying game rules and consequences."""
         current_room = self.player.current_room
 
-        # Invalid move
         if direction not in current_room.connections:
-            print("\033[91mYou can't go that way!\033[0m")
+            print(f"{RED}You can't go that way!{RESET}")
             return
 
         next_room = current_room.connections[direction]
 
-        # Darkness blocks and also hurts
         if blocked_by_darkness(self.player, next_room):
             self.player.take_damage(DAMAGE)
-            print("\033[91mIt is too dark. You trip and fall.\033[0m")
-            print(f"\033[91m-{DAMAGE} health\033[0m")
+            print(f"{RED}It is too dark. You trip and fall.{RESET}")
+            print(f"{RED}-{DAMAGE} health{RESET}")
             if not self.player.is_alive():
-                print("\033[91mYou collapsed. Game over!\033[0m")
+                print(f"{RED}You collapsed. Game over!{RESET}")
                 self.game_over = True
             return
 
-        # Locks block entry
         if blocked_by_lock(self.player, next_room):
             if next_room.name == "Armory":
                 print(
-                    "\033[91mThe Armory lock is seized. Maybe something can melt it.\033[0m"
+                    f"{YELLOW}The Armory lock is seized. Maybe something can melt it.{RESET}"
                 )
             else:
-                print("\033[91mThe door is locked. You need a keycard.\033[0m")
+                print(f"{RED}The door is locked. You need a keycard.{RESET}")
             return
 
-        # Move into the room
         self.player.current_room = next_room
         current_room = self.player.current_room
 
-        # Boss room check
         if boss_room(current_room):
             print(current_room.description)
             if has_boss_items(self.player):
                 print(
-                    "\033[93mCongratulations! You encountered and defeated Maradonyx."
+                    f"{GREEN}Congratulations! You encountered and defeated Maradonyx.{RESET}"
                 )
                 print(
-                    "With the threat neutralized, you recover the schematics and make your way out of Vault 166."
+                    f"{GREEN}With the threat neutralized, you recover the schematics and make your way out of Vault 166.{RESET}"
                 )
-                print("You win!\033[0m")
-
+                print(f"{GREEN}You win!{RESET}")
             else:
-                print("\033[91mYou encountered Maradonyx unprepared. Game over!\033[0m")
+                print(f"{RED}You encountered Maradonyx unprepared. Game over!{RESET}")
             self.game_over = True
             return
 
-        # Environmental hazards
         damage = hazard_damage(self.player, current_room)
+
         if damage:
             self.player.take_damage(damage)
-            print("\033[91mThe environment harms you.\033[0m")
-            print(f"\033[91m-{damage} health\033[0m")
+            print(f"{RED}The environment harms you.{RESET}")
+            print(f"{RED}-{damage} health{RESET}")
             if not self.player.is_alive():
-                print("\033[91mYou collapsed. Game over!\033[0m")
+                print(f"{RED}You collapsed. Game over!{RESET}")
                 self.game_over = True
                 return
 
     def _handle_get(self, item: str) -> None:
+        """Handles the player trying to get an item in the current room."""
         current_room = self.player.current_room
 
         if current_room.item == item:
             self.player.inventory.add(item)
-            print("You picked up the\033[94m", item + "\033[0m.")
+            print(f"{GREEN}You picked up the {BLUE}{item}{RESET}.")
             current_room.item = None
         else:
-            print("\033[91mThere is no item in the room.\033[0m")
+            print(f"{RED}There is no item in the room.{RESET}")
 
-    def process_command(self, command: str) -> None:
+    def _render_room(self) -> None:
+        room = self.player.current_room
+        print(room.description)
+
+        if room.note and not room.read_note:
+            print(room.note)
+            room.read_note = True
+
+        if room.item is not None:
+            print(f"You see a {BLUE}{room.item}{RESET} in the room.")
+
+    def _render_status(self) -> None:
+        room = self.player.current_room
+
+        print(f"{YELLOW}Current Room:{RESET} {room.name}")
+        print(f"{YELLOW}Health:{RESET} {self.player.health}")
+        print(f"{YELLOW}Inventory:{RESET} {sorted(self.player.inventory)}")
+
+    def process_command(self, command: str) -> str:
+        """Processes the player's input command and executes the corresponding action."""
         action, value = self.parser.parse(command)
 
         if action == "move":
@@ -102,30 +120,32 @@ class Game:
         elif action == "map":
             print_map()
         elif action == "help":
-            print("Commands: go <direction>, get <item>, map, help, exit/quit")
+            print(
+                f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, help, exit/quit"
+            )
         elif action == "exit":
-            print("Exiting game... Thanks for playing Vault 166!")
+            print(f"{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}")
             self.game_over = True
         else:
-            print(f"\033[91m{value}\033[0m")
+            print(f"{RED}{value}{RESET}")
+
+        return action
 
     def run(self):
+        """Starts the main game loop, rendering the initial room and processing player commands until the game is over."""
+        self._render_room()
+
         while not self.game_over:
-            current_room = self.player.current_room
-            # Display current room description
-            print(f"\033[92mYou moved to {current_room.name}\033[0m")
-            print(current_room.description)
-            if current_room.note and not current_room.read_note:
-                print(current_room.note)
-                current_room.read_note = True
-            # Display player's inventory
-            print("Inventory:", list(self.player.inventory))
-            print("Health:", self.player.health)
-            # Check if the current room contains an item
-            if current_room.item is not None:
-                print(f"You see a \033[94m{current_room.item}\033[0m in the room.")
-            # Player input
-            print("-----------------------------------------------------------------")
+            separator()
+            self._render_status()
+            separator()
+
             command = input("Enter your command: ")
-            print("-----------------------------------------------------------------")
-            self.process_command(command)
+            separator()
+
+            action = self.process_command(command)
+            if self.game_over:
+                break
+
+            if action in {"move", "get"}:
+                self._render_room()

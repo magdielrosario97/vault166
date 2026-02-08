@@ -1,4 +1,9 @@
 class Room:
+    """
+    Represents a room in the vault, with its description, connections,
+    and any items or hazards it contains.
+    """
+
     def __init__(
         self,
         name: str,
@@ -21,4 +26,5 @@ class Room:
         self.connections: dict[str, "Room"] = {}
 
     def connect(self, direction: str, room: "Room") -> None:
+        """Connects this room to another room in the given direction."""
         self.connections[direction] = room

@@ -1,8 +1,9 @@
 from room import Room
+from utils import GREEN, RESET, YELLOW
 
 
 def build_map():
-    # Create rooms (name, description, hazard, locked, dark, item)
+    """Creates the rooms and their connections for the game map."""
     vault_entrance = Room(
         "Vault Entrance",
         "You step through a massive reinforced door into a stale, dimly lit entrance where the outside world feels far away.",
@@ -171,17 +172,22 @@ def build_map():
     return rooms
 
 
-def print_map():
+def print_map() -> None:
+    """Prints a simple ASCII map of the vault layout."""
     print(
-        """
+        f"""{GREEN}
           Vault 166 Map (North is up)
                     [VE]
-              [ST]  [DE]  [SE]
-              [CH]        [MD]
-        [RD]  [WW]  [AT]  [EW]  [LQ]
-              [EX]  [ER]  [CF]
+                    |  |
+              [ST]--[DE]--[SE]
+                    |  |
+              [CH]  |  |  [MD]
+        [RD]--[WW]--[AT]--[EW][LQ]
+              [EX]  |  |  [CF]
+                    [ER]
                     [AR]
 
+        {YELLOW}
         Legend:
         VE: Vault Entrance
         DE: Decon
@@ -198,5 +204,6 @@ def print_map():
         CH: Chemical
         EX: Experimental
         RD: Research & Development
-    """
+        {RESET}
+         """,
     )

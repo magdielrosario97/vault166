@@ -22,10 +22,12 @@ BOSS_ITEMS: set[str] = {
 
 
 def blocked_by_darkness(player: Player, room: Room) -> bool:
+    """Determines if the player is blocked by darkness when trying to enter a room."""
     return room.dark and FLASHLIGHT not in player.inventory
 
 
 def blocked_by_lock(player: Player, room: Room) -> bool:
+    """Determines if the player is blocked by a locked door when trying to enter a room."""
     if room.name == "Armory":
         return ACID not in player.inventory
 
@@ -33,15 +35,18 @@ def blocked_by_lock(player: Player, room: Room) -> bool:
 
 
 def boss_room(room: Room) -> bool:
+    """Determines if the given room is the boss room."""
     return room.name == "Research & Development"
 
 
 def has_boss_items(player: Player) -> bool:
+    """Checks if the player has all the required items to defeat the boss."""
     missing = BOSS_ITEMS - player.inventory
     return not missing
 
 
 def hazard_damage(player: Player, room: Room) -> int:
+    """Calculates the damage the player takes from hazards in the room, if any."""
     if room.hazard is None:
         return 0
 
