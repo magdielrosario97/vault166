@@ -92,6 +92,7 @@ class Game:
             print(f"{RED}There is no item in the room.{RESET}")
 
     def _render_room(self) -> None:
+        """Renders the current room's description, any notes, and visible items."""
         room = self.player.current_room
         print(room.description)
 
@@ -103,6 +104,7 @@ class Game:
             print(f"You see a {BLUE}{room.item}{RESET} in the room.")
 
     def _render_status(self) -> None:
+        """Renders the player's current status, including room name, health, and inventory."""
         room = self.player.current_room
 
         print(f"{YELLOW}Current Room:{RESET} {room.name}")
