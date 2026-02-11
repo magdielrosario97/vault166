@@ -9,9 +9,14 @@ Revised by Magdiel Rosario Orta
 
 from game import Game
 from utils import welcome
+from db import get_db_connection, initialize_db
 
 
 def vault166():
+    conn = get_db_connection()
+    initialize_db(conn)
+    conn.close()
+
     game = Game()
     game.run()
 
