@@ -60,6 +60,18 @@ class InputParser:
         if verb in {"exit", "quit"}:
             return "exit", None
 
+        if verb == "save":
+            if len(tokens) < 2:
+                return "save", "main"
+            slot_name = tokens[1]
+            return "save", slot_name
+
+        if verb == "load":
+            if len(tokens) < 2:
+                return "load", "main"
+            slot_name = tokens[1]
+            return "load", slot_name
+
         return "invalid", "Unknown command. Type 'help' to see available commands."
 
     def tokenize(self, raw: str) -> list[str]:
