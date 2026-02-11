@@ -2,7 +2,7 @@ from utils import separator, GREEN, BLUE, RED, YELLOW, RESET
 from player import Player
 from map import build_map, print_map
 from input_parser import InputParser
-from db import get_db_connection, save_game
+from db import get_db_connection, save_game, load_game
 from rules import (
     blocked_by_darkness,
     blocked_by_lock,
@@ -127,7 +127,12 @@ class Game:
             save_game(self.conn, value, self.player, self.rooms)
             print(f"{GREEN}Game saved to slot {value}.{RESET}")
         elif action == "load":
-            print(f"{YELLOW}Load request received for slot: {value}{RESET}")
+            loaded = load_game(self.conn, value, self.rooms, self.player)
+            if loaded:
+                print(f"{GREEN}Game loaded from slot {value}.{RESET}")
+                self._render_room()
+            else:
+                print(f"{RED}Save slot not found: {value}{RESET}")
         elif action == "help":
             print(
                 f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, save [slot], load [slot], help, exit/quit"

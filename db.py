@@ -116,3 +116,56 @@ def save_game(conn, slot_name, player, rooms) -> None:
         )
 
     conn.commit()
+
+
+def load_game(conn, slot_name, rooms, player) -> bool:
+    """Loads a save slot into the current game objects.
+    Returns True if loaded, False if slot not found."""
+    row = conn.execute(
+        "SELECT save_id FROM saves WHERE slot_name = ?;",
+        (slot_name,),
+    ).fetchone()
+
+    if row is None:
+        return False
+
+    save_id = row[0]
+
+    player_row = conn.execute(
+        "SELECT current_room, health FROM player_state WHERE save_id = ?;",
+        (save_id,),
+    ).fetchone()
+
+    if player_row is None:
+        return False
+
+    current_room_name = player_row[0]
+    health = player_row[1]
+
+    if current_room_name not in rooms:
+        return False
+
+    player.current_room = rooms[current_room_name]
+    player.health = int(health)
+
+    inventory_rows = conn.execute(
+        "SELECT item_name FROM inventory WHERE save_id = ?;",
+        (save_id,),
+    ).fetchall()
+
+    player.inventory.clear()
+    for inventory_row in inventory_rows:
+        player.inventory.add(inventory_row[0])
+
+    room_rows = conn.execute(
+        "SELECT room_name, item, read_note FROM room_state WHERE save_id = ?;",
+        (save_id,),
+    ).fetchall()
+
+    for room_state in room_rows:
+        room_name = room_state[0]
+        if room_name in rooms:
+            rooms[room_name].item = room_state[1]
+            rooms[room_name].read_note = bool(room_state[2])
+
+    return True
