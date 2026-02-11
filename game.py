@@ -121,9 +121,13 @@ class Game:
             self._handle_get(value)
         elif action == "map":
             print_map()
+        elif action == "save":
+            print(f"{YELLOW}Save request received for slot: {value}{RESET}")
+        elif action == "load":
+            print(f"{YELLOW}Load request received for slot: {value}{RESET}")
         elif action == "help":
             print(
-                f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, help, exit/quit"
+                f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, save [slot], load [slot], help, exit/quit"
             )
         elif action == "exit":
             print(f"{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}")
