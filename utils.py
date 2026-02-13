@@ -18,5 +18,5 @@ def welcome() -> None:
     print("Survive the vault and gather the key items needed to win.")
     print("Move: go <direction>   Example: go north, go n, go up")
     print("Get:  get <item>        Example: get flashlight, get fl")
-    print("Other: map, help, quit")
+    print("Other: map, save [slot], load [slot], help, quit")
     separator()
