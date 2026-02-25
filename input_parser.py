@@ -51,6 +51,18 @@ class InputParser:
                 return "invalid", "Item not found or ambiguous."
             return "get", item
 
+        if verb == "save":
+            if len(tokens) < 2:
+                return "save", "main"
+            slot_name = tokens[1]
+            return "save", slot_name
+
+        if verb == "load":
+            if len(tokens) < 2:
+                return "load", "main"
+            slot_name = tokens[1]
+            return "load", slot_name
+
         if verb == "map":
             return "map", None
 

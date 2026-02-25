@@ -2,6 +2,7 @@ from utils import separator, GREEN, BLUE, RED, YELLOW, RESET
 from player import Player
 from map import build_map, print_map
 from input_parser import InputParser
+from db import get_db_connection, save_game, load_game
 from rules import (
     blocked_by_darkness,
     blocked_by_lock,
@@ -22,6 +23,7 @@ class Game:
 
         valid_items = {room.item for room in self.rooms.values() if room.item}
         self.parser = InputParser(valid_items, 2)
+        self.conn = get_db_connection()
 
     def _handle_move(self, direction: str) -> None:
         """Handles player movement in the given direction, applying game rules and consequences."""
@@ -92,6 +94,7 @@ class Game:
             print(f"{RED}There is no item in the room.{RESET}")
 
     def _render_room(self) -> None:
+        """Renders the current room's description, any notes, and visible items."""
         room = self.player.current_room
         print(room.description)
 
@@ -103,6 +106,7 @@ class Game:
             print(f"You see a {BLUE}{room.item}{RESET} in the room.")
 
     def _render_status(self) -> None:
+        """Renders the player's current status, including room name, health, and inventory."""
         room = self.player.current_room
 
         print(f"{YELLOW}Current Room:{RESET} {room.name}")
@@ -119,13 +123,24 @@ class Game:
             self._handle_get(value)
         elif action == "map":
             print_map()
+        elif action == "save":
+            save_game(self.conn, value, self.player, self.rooms)
+            print(f"{GREEN}Game saved to slot {value}.{RESET}")
+        elif action == "load":
+            loaded = load_game(self.conn, value, self.rooms, self.player)
+            if loaded:
+                print(f"{GREEN}Game loaded from slot {value}.{RESET}")
+                self._render_room()
+            else:
+                print(f"{RED}Save slot not found: {value}{RESET}")
         elif action == "help":
             print(
-                f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, help, exit/quit"
+                f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, save [slot], load [slot], help, exit/quit"
             )
         elif action == "exit":
             print(f"{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}")
             self.game_over = True
+            self.conn.close()
         else:
             print(f"{RED}{value}{RESET}")
 
