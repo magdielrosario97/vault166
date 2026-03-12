@@ -1,3 +1,7 @@
+# Vault 166
+
+<img width="600" alt="vault166_thumbnail" src="https://github.com/user-attachments/assets/1b6ef6b9-b3b8-4f87-92f0-87c760a52a02" />
+
 ### Project Overview
 
 Vault 166 is a text-based adventure game written in Python that emphasizes modular design, clear game flow, and rule-based decision making. The project was originally developed as a course assignment and has since been enhanced as part of a capstone project to better demonstrate software engineering principles, algorithmic thinking, and maintainable architecture.
