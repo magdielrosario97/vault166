@@ -140,7 +140,6 @@ class Game:
         elif action == "exit":
             print(f"{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}")
             self.game_over = True
-            self.conn.close()
         else:
             print(f"{RED}{value}{RESET}")
 
@@ -148,19 +147,27 @@ class Game:
 
     def run(self):
         """Starts the main game loop, rendering the initial room and processing player commands until the game is over."""
-        self._render_room()
+        try:
+            self._render_room()
 
-        while not self.game_over:
-            separator()
-            self._render_status()
-            separator()
+            while not self.game_over:
+                separator()
+                self._render_status()
+                separator()
 
-            command = input("Enter your command: ")
-            separator()
+                command = input("Enter your command: ")
+                separator()
 
-            action = self.process_command(command)
-            if self.game_over:
-                break
+                action = self.process_command(command)
+                if self.game_over:
+                    break
 
-            if action in {"move", "get"}:
-                self._render_room()
+                if action in {"move", "get"}:
+                    self._render_room()
+
+        except KeyboardInterrupt:
+            print(f"\n{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}")
+            self.game_over = True
+
+        finally:
+            self.conn.close()
