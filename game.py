@@ -88,10 +88,10 @@ class Game:
 
         if current_room.item == item:
             self.player.inventory.add(item)
-            print(f"{GREEN}You picked up the {BLUE}{item}{RESET}.")
             current_room.item = None
+            return f"{GREEN}You picked up the {BLUE}{item}{RESET}."
         else:
-            print(f"{RED}There is no item in the room.{RESET}")
+            return f"{RED}There is no item in the room.{RESET}"
 
     def _render_room(self) -> None:
         """Renders the current room's description, any notes, and visible items."""
@@ -120,7 +120,8 @@ class Game:
         if action == "move":
             self._handle_move(value)
         elif action == "get":
-            self._handle_get(value)
+            message = self._handle_get(value)
+            print(message)
         elif action == "map":
             print_map()
         elif action == "save":
