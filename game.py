@@ -28,59 +28,70 @@ class Game:
     def _handle_move(self, direction: str) -> None:
         """Handles player movement in the given direction, applying game rules and consequences."""
         current_room = self.player.current_room
+        messages = []
 
+        """Case 1: Check if the direction is valid from the current room."""
         if direction not in current_room.connections:
-            print(f"{RED}You can't go that way!{RESET}")
-            return
+            messages.append(f"{RED}You can't go that way!{RESET}")
+            return messages
 
         next_room = current_room.connections[direction]
 
+        """Case 2: Check for darkness blocking the path."""
         if blocked_by_darkness(self.player, next_room):
             self.player.take_damage(DAMAGE)
-            print(f"{RED}It is too dark. You trip and fall.{RESET}")
-            print(f"{RED}-{DAMAGE} health{RESET}")
-            if not self.player.is_alive():
-                print(f"{RED}You collapsed. Game over!{RESET}")
-                self.game_over = True
-            return
+            messages.append(f"{RED}It is too dark. You trip and fall.{RESET}")
+            messages.append(f"{RED}-{DAMAGE} health{RESET}")
 
+            if not self.player.is_alive():
+                messages.append(f"{RED}You collapsed. Game over!{RESET}")
+                self.game_over = True
+            return messages
+
+        """Case 3: Check for locks blocking the path."""
         if blocked_by_lock(self.player, next_room):
             if next_room.name == "Armory":
-                print(
+                messages.append(
                     f"{YELLOW}The Armory lock is seized. Maybe something can melt it.{RESET}"
                 )
             else:
-                print(f"{RED}The door is locked. You need a keycard.{RESET}")
-            return
+                messages.append(f"{RED}The door is locked. You need a keycard.{RESET}")
+            return messages
 
         self.player.current_room = next_room
         current_room = self.player.current_room
 
+        """Case 4: Check for boss encounter."""
         if boss_room(current_room):
-            print(current_room.description)
+            messages.append(current_room.description)
             if has_boss_items(self.player):
-                print(
+                messages.append(
                     f"{GREEN}Congratulations! You encountered and defeated Maradonyx.{RESET}"
                 )
-                print(
+                messages.append(
                     f"{GREEN}With the threat neutralized, you recover the schematics and make your way out of Vault 166.{RESET}"
                 )
-                print(f"{GREEN}You win!{RESET}")
+                messages.append(f"{GREEN}You win!{RESET}")
             else:
-                print(f"{RED}You encountered Maradonyx unprepared. Game over!{RESET}")
+                messages.append(
+                    f"{RED}You encountered Maradonyx unprepared. Game over!{RESET}"
+                )
             self.game_over = True
-            return
+            return messages
 
         damage = hazard_damage(self.player, current_room)
 
+        """Case 5: Check for environmental hazards in the new room and apply damage if necessary."""
         if damage:
             self.player.take_damage(damage)
-            print(f"{RED}The environment harms you.{RESET}")
-            print(f"{RED}-{damage} health{RESET}")
+            messages.append(f"{RED}The environment harms you.{RESET}")
+            messages.append(f"{RED}-{damage} health{RESET}")
             if not self.player.is_alive():
-                print(f"{RED}You collapsed. Game over!{RESET}")
+                messages.append(f"{RED}You collapsed. Game over!{RESET}")
                 self.game_over = True
-                return
+                return messages
+
+        return messages
 
     def _handle_get(self, item: str) -> None:
         """Handles the player trying to get an item in the current room."""
@@ -118,7 +129,10 @@ class Game:
         action, value = self.parser.parse(command)
 
         if action == "move":
-            self._handle_move(value)
+            messages = self._handle_move(value)
+            for message in messages:
+                print(message)
+
         elif action == "get":
             message = self._handle_get(value)
             print(message)
