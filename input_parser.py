@@ -20,8 +20,11 @@ DIRECTION_ALIASES = {
 class InputParser:
     """Parses player input into game commands and arguments."""
 
-    def __init__(self, valid_items: set[str], min_item_chars: int = 2):
+    def __init__(
+        self, valid_items: set[str], valid_rooms: set[str], min_item_chars: int = 2
+    ):
         self.valid_items = valid_items
+        self.valid_rooms = valid_rooms
         self.min_item_chars = min_item_chars
 
     def parse(self, raw: str) -> tuple[str, str | None]:
@@ -72,6 +75,17 @@ class InputParser:
         if verb in {"exit", "quit"}:
             return "exit", None
 
+        # TODO: Include debug commands
+        if verb == "tp":
+            if len(tokens) < 2:
+                return "invalid", "Specify a room to teleport to."
+
+            room_name = self.normalize_room(" ".join(tokens[1:]))
+            if room_name is None:
+                return "invalid", "Room not found or ambiguous."
+
+            return "tp", room_name
+
         return "invalid", "Unknown command. Type 'help' to see available commands."
 
     def tokenize(self, raw: str) -> list[str]:
@@ -113,5 +127,18 @@ class InputParser:
         match_items = [item for item in self.valid_items if item.startswith(in_item)]
         if len(match_items) == 1:
             return match_items[0]
+
+        return None
+
+    def normalize_room(self, in_room: str) -> str | None:
+        """Converts input room name to a valid room name or returns None if invalid or ambiguous."""
+        if len(in_room) < self.min_item_chars:
+            return None
+
+        match_rooms = [
+            room for room in self.valid_rooms if room.lower().startswith(in_room)
+        ]
+        if len(match_rooms) == 1:
+            return match_rooms[0]
 
         return None

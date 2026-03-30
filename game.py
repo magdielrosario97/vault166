@@ -22,10 +22,13 @@ class Game:
         self.player = Player(self.rooms["Vault Entrance"])
 
         valid_items = {room.item for room in self.rooms.values() if room.item}
-        self.parser = InputParser(valid_items, 2)
+        valid_rooms = set(self.rooms.keys())
+        self.parser = InputParser(valid_items, valid_rooms, 2)
         self.conn = get_db_connection()
 
-    def _handle_move(self, direction: str) -> None:
+        self.debug = False  # Set to True to enable debug mode with extra info.
+
+    def _handle_move(self, direction: str) -> list[str]:
         """Handles player movement in the given direction, applying game rules and consequences."""
         current_room = self.player.current_room
         messages = []
@@ -93,7 +96,7 @@ class Game:
 
         return messages
 
-    def _handle_get(self, item: str) -> None:
+    def _handle_get(self, item: str) -> str:
         """Handles the player trying to get an item in the current room."""
         current_room = self.player.current_room
 
@@ -116,6 +119,16 @@ class Game:
         if room.item is not None:
             print(f"You see a {BLUE}{room.item}{RESET} in the room.")
 
+    def _handle_debug(self, action: str, value: str | None) -> str:
+        """Handles debug commands when debug mode is enabled."""
+        if action == "tp":
+            self.player.current_room = self.rooms[value]
+            print(f"{GREEN}Teleported to {value}{RESET}")
+            self._render_room()
+            return "debug"
+
+        return "debug"
+
     def _render_status(self) -> None:
         """Renders the player's current status, including room name, health, and inventory."""
         room = self.player.current_room
@@ -126,7 +139,18 @@ class Game:
 
     def process_command(self, command: str) -> str:
         """Processes the player's input command and executes the corresponding action."""
+
+        # Toggle debug mode with "debug" command
+        if command.strip() == "debug":
+            self.debug = not self.debug
+            state = "enabled" if self.debug else "disabled"
+            print(f"{YELLOW}Debug mode {state}{RESET}")
+            return "debug"
+
         action, value = self.parser.parse(command)
+
+        if self.debug and action == "tp":
+            return self._handle_debug(action, value)
 
         if action == "move":
             messages = self._handle_move(value)
@@ -136,11 +160,14 @@ class Game:
         elif action == "get":
             message = self._handle_get(value)
             print(message)
+
         elif action == "map":
             print_map()
+
         elif action == "save":
             save_game(self.conn, value, self.player, self.rooms)
             print(f"{GREEN}Game saved to slot {value}.{RESET}")
+
         elif action == "load":
             loaded = load_game(self.conn, value, self.rooms, self.player)
             if loaded:
@@ -148,13 +175,16 @@ class Game:
                 self._render_room()
             else:
                 print(f"{RED}Save slot not found: {value}{RESET}")
+
         elif action == "help":
             print(
                 f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, save [slot], load [slot], help, exit/quit"
             )
+
         elif action == "exit":
             print(f"{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}")
             self.game_over = True
+
         else:
             print(f"{RED}{value}{RESET}")
 
