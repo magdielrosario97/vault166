@@ -28,6 +28,11 @@ class Game:
 
         self.debug = False  # Set to True to enable debug mode with extra commands.
 
+    def _display_messages(self, messages: list[str]) -> None:
+        """Utility method to display a message to the player."""
+        for message in messages:
+            print(message)
+
     def _handle_move(self, direction: str) -> list[str]:
         """Handles player movement in the given direction, applying game rules and consequences."""
         current_room = self.player.current_room
@@ -124,9 +129,7 @@ class Game:
             self.player.current_room = self.rooms[value]
             print(f"{GREEN}Teleported to {value}{RESET}")
 
-            messages = self._render_room()
-            for message in messages:
-                print(message)
+            self._display_messages(self._render_room())
 
             return "debug"
 
@@ -172,7 +175,7 @@ class Game:
 
         return "debug"
 
-    def _render_status(self) -> None:
+    def _render_status(self) -> list[str]:
         """Renders the player's current status, including room name, health, and inventory."""
         room = self.player.current_room
         messages = []
@@ -201,9 +204,7 @@ class Game:
 
         # Gameplay commands - move, get, map, save, load, help, exit
         if action == "move":
-            messages = self._handle_move(value)
-            for message in messages:
-                print(message)
+            self._display_messages(self._handle_move(value))
 
         elif action == "get":
             message = self._handle_get(value)
@@ -221,9 +222,7 @@ class Game:
             if loaded:
                 print(f"{GREEN}Game loaded from slot {value}.{RESET}")
 
-                messages = self._render_room()
-                for message in messages:
-                    print(message)
+                self._display_messages(self._render_room())
             else:
                 print(f"{RED}Save slot not found: {value}{RESET}")
 
@@ -244,15 +243,11 @@ class Game:
     def run(self):
         """Starts the main game loop, rendering the initial room and processing player commands until the game is over."""
         try:
-            messages = self._render_room()
-            for message in messages:
-                print(message)
+            self._display_messages(self._render_room())
 
             while not self.game_over:
                 separator()
-                messages = self._render_status()
-                for message in messages:
-                    print(message)
+                self._display_messages(self._render_status())
                 separator()
 
                 command = input("Enter your command: ")
@@ -263,9 +258,7 @@ class Game:
                     break
 
                 if action in {"move", "get"}:
-                    messages = self._render_room()
-                    for message in messages:
-                        print(message)
+                    self._display_messages(self._render_room())
 
         except KeyboardInterrupt:
             print(f"\n{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}")
