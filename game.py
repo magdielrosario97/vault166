@@ -26,21 +26,19 @@ class Game:
         self.parser = InputParser(valid_items, valid_rooms, 2)
         self.conn = get_db_connection()
 
-        self.debug = False  # Set to True to enable debug mode with extra info.
+        self.debug = False  # Set to True to enable debug mode with extra commands.
 
     def _handle_move(self, direction: str) -> list[str]:
         """Handles player movement in the given direction, applying game rules and consequences."""
         current_room = self.player.current_room
         messages = []
 
-        """Case 1: Check if the direction is valid from the current room."""
         if direction not in current_room.connections:
             messages.append(f"{RED}You can't go that way!{RESET}")
             return messages
 
         next_room = current_room.connections[direction]
 
-        """Case 2: Check for darkness blocking the path."""
         if blocked_by_darkness(self.player, next_room):
             self.player.take_damage(DAMAGE)
             messages.append(f"{RED}It is too dark. You trip and fall.{RESET}")
@@ -51,7 +49,6 @@ class Game:
                 self.game_over = True
             return messages
 
-        """Case 3: Check for locks blocking the path."""
         if blocked_by_lock(self.player, next_room):
             if next_room.name == "Armory":
                 messages.append(
@@ -64,7 +61,6 @@ class Game:
         self.player.current_room = next_room
         current_room = self.player.current_room
 
-        """Case 4: Check for boss encounter."""
         if boss_room(current_room):
             messages.append(current_room.description)
             if has_boss_items(self.player):
@@ -84,7 +80,6 @@ class Game:
 
         damage = hazard_damage(self.player, current_room)
 
-        """Case 5: Check for environmental hazards in the new room and apply damage if necessary."""
         if damage:
             self.player.take_damage(damage)
             messages.append(f"{RED}The environment harms you.{RESET}")
@@ -127,6 +122,46 @@ class Game:
             self._render_room()
             return "debug"
 
+        if action == "add":
+            if value in self.player.inventory:
+                print(f"{YELLOW}{value} is already in inventory{RESET}")
+            else:
+                self.player.inventory.add(value)
+                print(f"{GREEN}Added {value} to inventory{RESET}")
+            return "debug"
+
+        if action == "remove":
+            if value in self.player.inventory:
+                self.player.inventory.remove(value)
+                print(f"{GREEN}Removed {value} from inventory{RESET}")
+            else:
+                print(f"{RED}{value} is not in inventory{RESET}")
+            return "debug"
+
+        if action == "clearinv":
+            if not self.player.inventory:
+                print(f"{YELLOW}Inventory is already empty{RESET}")
+            else:
+                self.player.inventory.clear()
+                print(f"{GREEN}Cleared inventory{RESET}")
+            return "debug"
+
+        if action == "godmode":
+            self.player.health = 999
+            self.player.inventory.update(
+                {
+                    "flashlight",
+                    "keycard",
+                    "mask",
+                    "hazmat_suit",
+                    "acid",
+                    "fusion_core",
+                    "id_tag",
+                    "radzapper",
+                }
+            )
+            print(f"{GREEN}Maxed health and added all items to inventory{RESET}")
+
         return "debug"
 
     def _render_status(self) -> None:
@@ -149,9 +184,11 @@ class Game:
 
         action, value = self.parser.parse(command)
 
-        if self.debug and action == "tp":
+        # Debug command - only execute if debug mode is enabled
+        if self.debug and action in {"tp", "add", "remove", "clearinv", "godmode"}:
             return self._handle_debug(action, value)
 
+        # Gameplay commands - move, get, map, save, load, help, exit
         if action == "move":
             messages = self._handle_move(value)
             for message in messages:
