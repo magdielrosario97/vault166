@@ -175,10 +175,13 @@ class Game:
     def _render_status(self) -> None:
         """Renders the player's current status, including room name, health, and inventory."""
         room = self.player.current_room
+        messages = []
 
-        print(f"{YELLOW}Current Room:{RESET} {room.name}")
-        print(f"{YELLOW}Health:{RESET} {self.player.health}")
-        print(f"{YELLOW}Inventory:{RESET} {sorted(self.player.inventory)}")
+        messages.append(f"{YELLOW}Current Room:{RESET} {room.name}")
+        messages.append(f"{YELLOW}Health:{RESET} {self.player.health}")
+        messages.append(f"{YELLOW}Inventory:{RESET} {sorted(self.player.inventory)}")
+
+        return messages
 
     def process_command(self, command: str) -> str:
         """Processes the player's input command and executes the corresponding action."""
@@ -247,7 +250,9 @@ class Game:
 
             while not self.game_over:
                 separator()
-                self._render_status()
+                messages = self._render_status()
+                for message in messages:
+                    print(message)
                 separator()
 
                 command = input("Enter your command: ")
