@@ -102,24 +102,32 @@ class Game:
         else:
             return f"{RED}There is no item in the room.{RESET}"
 
-    def _render_room(self) -> None:
+    def _render_room(self) -> list[str]:
         """Renders the current room's description, any notes, and visible items."""
+        messages = []
+
         room = self.player.current_room
-        print(room.description)
+        messages.append(room.description)
 
         if room.note and not room.read_note:
-            print(room.note)
+            messages.append(room.note)
             room.read_note = True
 
         if room.item is not None:
-            print(f"You see a {BLUE}{room.item}{RESET} in the room.")
+            messages.append(f"You see a {BLUE}{room.item}{RESET} in the room.")
+
+        return messages
 
     def _handle_debug(self, action: str, value: str | None) -> str:
         """Handles debug commands when debug mode is enabled."""
         if action == "tp":
             self.player.current_room = self.rooms[value]
             print(f"{GREEN}Teleported to {value}{RESET}")
-            self._render_room()
+
+            messages = self._render_room()
+            for message in messages:
+                print(message)
+
             return "debug"
 
         if action == "add":
@@ -209,7 +217,10 @@ class Game:
             loaded = load_game(self.conn, value, self.rooms, self.player)
             if loaded:
                 print(f"{GREEN}Game loaded from slot {value}.{RESET}")
-                self._render_room()
+
+                messages = self._render_room()
+                for message in messages:
+                    print(message)
             else:
                 print(f"{RED}Save slot not found: {value}{RESET}")
 
@@ -230,7 +241,9 @@ class Game:
     def run(self):
         """Starts the main game loop, rendering the initial room and processing player commands until the game is over."""
         try:
-            self._render_room()
+            messages = self._render_room()
+            for message in messages:
+                print(message)
 
             while not self.game_over:
                 separator()
@@ -245,7 +258,9 @@ class Game:
                     break
 
                 if action in {"move", "get"}:
-                    self._render_room()
+                    messages = self._render_room()
+                    for message in messages:
+                        print(message)
 
         except KeyboardInterrupt:
             print(f"\n{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}")
