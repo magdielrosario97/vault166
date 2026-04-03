@@ -96,16 +96,19 @@ class Game:
 
         return messages
 
-    def _handle_get(self, item: str) -> str:
+    def _handle_get(self, item: str) -> list[str]:
         """Handles the player trying to get an item in the current room."""
         current_room = self.player.current_room
+        messages = []
 
         if current_room.item == item:
             self.player.inventory.add(item)
             current_room.item = None
-            return f"{GREEN}You picked up the {BLUE}{item}{RESET}."
+            messages.append(f"{GREEN}You picked up the {BLUE}{item}{RESET}.")
         else:
-            return f"{RED}There is no item in the room.{RESET}"
+            messages.append(f"{RED}There is no item in the room.{RESET}")
+
+        return messages
 
     def _render_room(self) -> list[str]:
         """Renders the current room's description, any notes, and visible items."""
@@ -207,8 +210,7 @@ class Game:
             self._display_messages(self._handle_move(value))
 
         elif action == "get":
-            message = self._handle_get(value)
-            print(message)
+            self._display_messages(self._handle_get(value))
 
         elif action == "map":
             print_map()
