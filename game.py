@@ -189,58 +189,60 @@ class Game:
 
         return messages
 
-    def process_command(self, command: str) -> str:
+    def process_command(self, command: str) -> tuple[str, list[str]]:
         """Processes the player's input command and executes the corresponding action."""
+        messages = []
 
         # Toggle debug mode with "debug" command
         if command.strip() == "debug":
             self.debug = not self.debug
             state = "enabled" if self.debug else "disabled"
-            print(f"{YELLOW}Debug mode {state}{RESET}")
-            return "debug"
+            messages.append(f"{YELLOW}Debug mode {state}{RESET}")
+            return "debug", messages
 
         action, value = self.parser.parse(command)
 
         # Debug command - only execute if debug mode is enabled
         if self.debug and action in {"tp", "add", "remove", "clearinv", "godmode"}:
-            return self._handle_debug(action, value)
+            return "debug", self._handle_debug(action, value)
 
         # Gameplay commands - move, get, map, save, load, help, exit
         if action == "move":
-            self._display_messages(self._handle_move(value))
+            messages.extend(self._handle_move(value))
 
         elif action == "get":
-            self._display_messages(self._handle_get(value))
+            messages.extend(self._handle_get(value))
 
         elif action == "map":
             print_map()
 
         elif action == "save":
             save_game(self.conn, value, self.player, self.rooms)
-            print(f"{GREEN}Game saved to slot {value}.{RESET}")
+            messages.append(f"{GREEN}Game saved to slot {value}.{RESET}")
 
         elif action == "load":
             loaded = load_game(self.conn, value, self.rooms, self.player)
             if loaded:
-                print(f"{GREEN}Game loaded from slot {value}.{RESET}")
-
-                self._display_messages(self._render_room())
+                messages.append(f"{GREEN}Game loaded from slot {value}.{RESET}")
+                messages.extend(self._render_room())
             else:
-                print(f"{RED}Save slot not found: {value}{RESET}")
+                messages.append(f"{RED}Save slot not found: {value}{RESET}")
 
         elif action == "help":
-            print(
+            messages.append(
                 f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, save [slot], load [slot], help, exit/quit"
             )
 
         elif action == "exit":
-            print(f"{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}")
+            messages.append(
+                f"{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}"
+            )
             self.game_over = True
 
         else:
-            print(f"{RED}{value}{RESET}")
+            messages.append(f"{RED}{value}{RESET}")
 
-        return action
+        return action, messages
 
     def run(self):
         """Starts the main game loop, rendering the initial room and processing player commands until the game is over."""
@@ -255,7 +257,9 @@ class Game:
                 command = input("Enter your command: ")
                 separator()
 
-                action = self.process_command(command)
+                action, messages = self.process_command(command)
+                self._display_messages(messages)
+
                 if self.game_over:
                     break
 
