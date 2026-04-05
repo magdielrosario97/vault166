@@ -126,39 +126,39 @@ class Game:
 
         return messages
 
-    def _handle_debug(self, action: str, value: str | None) -> str:
+    def _handle_debug(self, action: str, value: str | None) -> list[str]:
         """Handles debug commands when debug mode is enabled."""
+        messages = []
+
         if action == "tp":
             self.player.current_room = self.rooms[value]
-            print(f"{GREEN}Teleported to {value}{RESET}")
-
-            self._display_messages(self._render_room())
-
-            return "debug"
+            messages.append(f"{GREEN}Teleported to {value}{RESET}")
+            messages.extend(self._render_room())
+            return messages
 
         if action == "add":
             if value in self.player.inventory:
-                print(f"{YELLOW}{value} is already in inventory{RESET}")
+                messages.append(f"{YELLOW}{value} is already in inventory{RESET}")
             else:
                 self.player.inventory.add(value)
-                print(f"{GREEN}Added {value} to inventory{RESET}")
-            return "debug"
+                messages.append(f"{GREEN}Added {value} to inventory{RESET}")
+            return messages
 
         if action == "remove":
             if value in self.player.inventory:
                 self.player.inventory.remove(value)
-                print(f"{GREEN}Removed {value} from inventory{RESET}")
+                messages.append(f"{GREEN}Removed {value} from inventory{RESET}")
             else:
-                print(f"{RED}{value} is not in inventory{RESET}")
-            return "debug"
+                messages.append(f"{RED}{value} is not in inventory{RESET}")
+            return messages
 
         if action == "clearinv":
             if not self.player.inventory:
-                print(f"{YELLOW}Inventory is already empty{RESET}")
+                messages.append(f"{YELLOW}Inventory is already empty{RESET}")
             else:
                 self.player.inventory.clear()
-                print(f"{GREEN}Cleared inventory{RESET}")
-            return "debug"
+                messages.append(f"{GREEN}Cleared inventory{RESET}")
+            return messages
 
         if action == "godmode":
             self.player.health = 999
@@ -174,9 +174,11 @@ class Game:
                     "radzapper",
                 }
             )
-            print(f"{GREEN}Maxed health and added all items to inventory{RESET}")
+            messages.append(
+                f"{GREEN}Maxed health and added all items to inventory{RESET}"
+            )
 
-        return "debug"
+        return messages
 
     def _render_status(self) -> list[str]:
         """Renders the player's current status, including room name, health, and inventory."""
