@@ -172,9 +172,11 @@ def build_map():
     return rooms
 
 
-def print_map() -> None:
+def render_map() -> list[str]:
     """Prints a simple ASCII map of the vault layout."""
-    print(
+    messages = []
+
+    messages.append(
         f"""{GREEN}
           Vault 166 Map (North is up)
                     [VE]
@@ -207,3 +209,5 @@ def print_map() -> None:
         {RESET}
          """,
     )
+
+    return messages
