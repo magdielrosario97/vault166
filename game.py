@@ -269,7 +269,9 @@ class Game:
                     self._display_messages(self._render_room())
 
         except KeyboardInterrupt:
-            print(f"\n{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}")
+            self._display_messages(
+                [f"\n{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}"]
+            )
             self.game_over = True
 
         finally:
