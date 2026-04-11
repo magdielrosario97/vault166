@@ -1,6 +1,6 @@
 from utils import separator, GREEN, BLUE, RED, YELLOW, RESET
 from player import Player
-from map import build_map, print_map
+from map import build_map, render_map
 from input_parser import InputParser
 from db import get_db_connection, save_game, load_game
 from rules import (
@@ -216,7 +216,7 @@ class Game:
             messages.extend(self._handle_get(value))
 
         elif action == "map":
-            print_map()
+            messages.extend(render_map())
 
         elif action == "save":
             save_game(self.conn, value, self.player, self.rooms)
