@@ -1,4 +1,3 @@
-import pytest
 from player import Player
 from room import Room
 from rules import (
@@ -11,17 +10,17 @@ from rules import (
 )
 
 
-def create_player(*items):
-    player = Player(create_room())
+def create_player(*items) -> Player:
+    player = Player(create_room)
     player.inventory.update(items)
     return player
 
 
-def create_room(name="Test Room", dark=False, locked=False, hazard=None):
+def create_room(name="Test Room", dark=False, locked=False, hazard=None) -> Room:
     return Room(name, "The testing room...", dark=dark, locked=locked, hazard=hazard)
 
 
-def test_blocked_by_darkness():
+def test_blocked_by_darkness() -> None:
     dark_room = create_room(dark=True)
     lit_room = create_room(dark=False)
     player = create_player()
@@ -35,7 +34,7 @@ def test_blocked_by_darkness():
     assert blocked_by_darkness(player, lit_room) == False
 
 
-def test_blocked_by_lock():
+def test_blocked_by_lock() -> None:
     locked_room = create_room(locked=True)
     unlocked_room = create_room(locked=False)
     armory_room = create_room(name="Armory", locked=True)
@@ -53,7 +52,7 @@ def test_blocked_by_lock():
     assert blocked_by_lock(player, unlocked_room) == False
 
 
-def test_boss_room():
+def test_boss_room() -> None:
     final_room = create_room(name="Research & Development")
     other_room = create_room()
 
@@ -61,7 +60,7 @@ def test_boss_room():
     assert boss_room(other_room) == False
 
 
-def test_has_boss_items():
+def test_has_boss_items() -> None:
     boss_items = ("radzapper", "mask", "hazmat_suit", "fusion_core", "id_tag")
     player = create_player(*boss_items)
 
@@ -74,7 +73,7 @@ def test_has_boss_items():
     assert has_boss_items(player) == False
 
 
-def test_hazard_damage():
+def test_hazard_damage() -> None:
     gas_room = create_room(hazard="gas")
     radiation_room = create_room(hazard="radiation")
     unknown_hazard = create_room(hazard="unknown")
