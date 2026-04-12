@@ -7,3 +7,6 @@ __pycache__/
 # Database files
 vault166.db
 *.db
+
+# Virtual environment
+venv/
