@@ -20,7 +20,7 @@ def create_room(name="Test Room", dark=False, locked=False, hazard=None) -> Room
     return Room(name, "The testing room...", dark=dark, locked=locked, hazard=hazard)
 
 
-def test_blocked_by_darkness() -> None:
+def test_blocked_by_darkness():
     dark_room = create_room(dark=True)
     lit_room = create_room(dark=False)
     player = create_player()
@@ -34,7 +34,7 @@ def test_blocked_by_darkness() -> None:
     assert blocked_by_darkness(player, lit_room) == False
 
 
-def test_blocked_by_lock() -> None:
+def test_blocked_by_lock():
     locked_room = create_room(locked=True)
     unlocked_room = create_room(locked=False)
     armory_room = create_room(name="Armory", locked=True)
@@ -52,7 +52,7 @@ def test_blocked_by_lock() -> None:
     assert blocked_by_lock(player, unlocked_room) == False
 
 
-def test_boss_room() -> None:
+def test_boss_room():
     final_room = create_room(name="Research & Development")
     other_room = create_room()
 
@@ -60,7 +60,7 @@ def test_boss_room() -> None:
     assert boss_room(other_room) == False
 
 
-def test_has_boss_items() -> None:
+def test_has_boss_items():
     boss_items = ("radzapper", "mask", "hazmat_suit", "fusion_core", "id_tag")
     player = create_player(*boss_items)
 
@@ -73,7 +73,7 @@ def test_has_boss_items() -> None:
     assert has_boss_items(player) == False
 
 
-def test_hazard_damage() -> None:
+def test_hazard_damage():
     gas_room = create_room(hazard="gas")
     radiation_room = create_room(hazard="radiation")
     unknown_hazard = create_room(hazard="unknown")
