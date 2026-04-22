@@ -1,5 +1,5 @@
-from room import Room
-from utils import GREEN, RESET, YELLOW
+from vault166.room import Room
+from vault166.utils import GREEN, RESET, YELLOW
 
 
 def build_map():

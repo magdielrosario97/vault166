@@ -1,9 +1,9 @@
-from utils import separator, GREEN, BLUE, RED, YELLOW, RESET
-from player import Player
-from map import build_map, render_map
-from input_parser import InputParser
-from db import get_db_connection, save_game, load_game
-from rules import (
+from vault166.utils import separator, GREEN, BLUE, RED, YELLOW, RESET
+from vault166.player import Player
+from vault166.map import build_map, render_map
+from vault166.input_parser import InputParser
+from vault166.db import get_db_connection, save_game, load_game
+from vault166.rules import (
     blocked_by_darkness,
     blocked_by_lock,
     boss_room,
