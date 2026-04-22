@@ -1,6 +1,6 @@
-from player import Player
-from room import Room
-from rules import (
+from vault166.player import Player
+from vault166.room import Room
+from vault166.rules import (
     blocked_by_darkness,
     blocked_by_lock,
     boss_room,

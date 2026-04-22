@@ -1,4 +1,4 @@
-from input_parser import InputParser
+from vault166.input_parser import InputParser
 
 
 def create_parser() -> InputParser:

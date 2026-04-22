@@ -1,5 +1,5 @@
-from player import Player
-from room import Room
+from vault166.player import Player
+from vault166.room import Room
 
 DAMAGE = 25
 

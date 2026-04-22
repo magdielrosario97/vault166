@@ -5,11 +5,13 @@ Created by Magdiel Rosario Orta
 
 Revised by Magdiel Rosario Orta
 8 February 2026
+
+Refactor started March 2026 (In progress)
 """
 
-from game import Game
-from utils import welcome
-from db import get_db_connection, initialize_db
+from vault166.game import Game
+from vault166.utils import welcome
+from vault166.db import get_db_connection, initialize_db
 
 
 def vault166():
