@@ -34,3 +34,6 @@ class SaveManager:
             message = f"Save slot '{slot_name}' not found."
 
         return success, message
+
+    def close(self) -> None:
+        self.conn.close()
