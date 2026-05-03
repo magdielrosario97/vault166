@@ -169,3 +169,21 @@ def load_game(conn, slot_name, rooms, player) -> bool:
             rooms[room_name].read_note = bool(room_state[2])
 
     return True
+
+
+def delete_game(conn, slot_name) -> bool:
+    """Deletes a save slot from the database.
+    Returns True if deleted, False if not found."""
+    row = conn.execute(
+        "SELECT save_id FROM saves WHERE slot_name = ?;",
+        (slot_name,),
+    ).fetchone()
+
+    if row is None:
+        return False
+
+    save_id = row[0]
+    conn.execute("DELETE FROM saves WHERE save_id = ?;", (save_id,))
+    conn.commit()
+
+    return True
