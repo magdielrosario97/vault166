@@ -1,4 +1,10 @@
-from db import get_db_connection, initialize_db, save_game, load_game, delete_game
+from vault166.db import (
+    get_db_connection,
+    initialize_db,
+    save_game,
+    load_game,
+    delete_game,
+)
 
 
 class SaveManager:
