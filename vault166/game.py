@@ -231,9 +231,17 @@ class Game:
             else:
                 messages.append(f"{RED}{message}{RESET}")
 
+        elif action == "delete":
+            success, message = self.save_manager.delete(value)
+
+            if success:
+                messages.append(f"{GREEN}{message}{RESET}")
+            else:
+                messages.append(f"{RED}{message}{RESET}")
+
         elif action == "help":
             messages.append(
-                f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, save [slot], load [slot], help, exit/quit"
+                f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, save [slot], load [slot], delete [slot], help, exit/quit"
             )
 
         elif action == "exit":
