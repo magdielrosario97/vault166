@@ -1,6 +1,7 @@
 from vault166.db import (
     get_db_connection,
     initialize_db,
+    view_saves,
     save_game,
     load_game,
     delete_game,
@@ -11,6 +12,10 @@ class SaveManager:
     def __init__(self):
         self.conn = get_db_connection()
         initialize_db(self.conn)
+
+    def view(self) -> list[tuple[str, str]]:
+        """Returns a list of save slots with their last save time."""
+        return view_saves(self.conn)
 
     def save(self, slot_name, player, rooms) -> str:
         save_game(self.conn, slot_name, player, rooms)

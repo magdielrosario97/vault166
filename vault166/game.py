@@ -231,6 +231,15 @@ class Game:
             else:
                 messages.append(f"{RED}{message}{RESET}")
 
+        elif action == "saves":
+            saves = self.save_manager.view()
+            if saves:
+                messages.append(f"{YELLOW}Save Slots:{RESET}")
+                for slot_name, last_save in saves:
+                    messages.append(f" - {slot_name} (Last saved: {last_save})")
+            else:
+                messages.append(f"{YELLOW}No save slots found.{RESET}")
+
         elif action == "delete":
             success, message = self.save_manager.delete(value)
 

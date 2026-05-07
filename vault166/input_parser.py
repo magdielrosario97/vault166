@@ -70,6 +70,9 @@ class InputParser:
             slot_name = tokens[1]
             return "load", slot_name
 
+        if verb == "saves":
+            return "saves", None
+
         if verb == "delete":
             if len(tokens) < 2:
                 return "delete", "main"

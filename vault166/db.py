@@ -57,6 +57,14 @@ def initialize_db(conn) -> None:
     conn.commit()
 
 
+def view_saves(conn):
+    """Returns a list of save slots with their last save time."""
+    rows = conn.execute(
+        "SELECT slot_name, last_save FROM saves ORDER BY last_save DESC;"
+    ).fetchall()
+    return rows
+
+
 def save_game(conn, slot_name, player, rooms) -> None:
     """Saves the current game state to the database."""
     now = datetime.now().isoformat(timespec="seconds")
