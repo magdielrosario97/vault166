@@ -2,7 +2,7 @@ from vault166.utils import separator, GREEN, BLUE, RED, YELLOW, RESET
 from vault166.player import Player
 from vault166.map import build_map, render_map
 from vault166.input_parser import InputParser
-from vault166.db import get_db_connection, save_game, load_game
+from vault166.save_manager import SaveManager
 from vault166.rules import (
     blocked_by_darkness,
     blocked_by_lock,
@@ -16,6 +16,10 @@ from vault166.rules import (
 class Game:
     """Main game class that manages the game state, player, and game loop."""
 
+    # TODO: DB Abstraction (feature/db-abstraction)
+    # 3. Update save and load handlers in process_command to use self.save_manager
+    # 4. Remove self.conn.close() from run()
+
     def __init__(self):
         self.game_over = False
         self.rooms = build_map()
@@ -24,7 +28,7 @@ class Game:
         valid_items = {room.item for room in self.rooms.values() if room.item}
         valid_rooms = set(self.rooms.keys())
         self.parser = InputParser(valid_items, valid_rooms, 2)
-        self.conn = get_db_connection()
+        self.save_manager = SaveManager()
 
         self.debug = False  # Set to True to enable debug mode with extra commands.
 
@@ -219,11 +223,11 @@ class Game:
             messages.extend(render_map())
 
         elif action == "save":
-            save_game(self.conn, value, self.player, self.rooms)
+            self.save_manager.save_game(value, self.player, self.rooms)
             messages.append(f"{GREEN}Game saved to slot {value}.{RESET}")
 
         elif action == "load":
-            loaded = load_game(self.conn, value, self.rooms, self.player)
+            loaded = self.save_manager.load_game(value, self.rooms, self.player)
             if loaded:
                 messages.append(f"{GREEN}Game loaded from slot {value}.{RESET}")
                 messages.extend(self._render_room())
