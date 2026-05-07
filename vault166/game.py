@@ -16,10 +16,6 @@ from vault166.rules import (
 class Game:
     """Main game class that manages the game state, player, and game loop."""
 
-    # TODO: DB Abstraction (feature/db-abstraction)
-    # 3. Update save and load handlers in process_command to use self.save_manager
-    # 4. Remove self.conn.close() from run()
-
     def __init__(self):
         self.game_over = False
         self.rooms = build_map()
@@ -223,16 +219,17 @@ class Game:
             messages.extend(render_map())
 
         elif action == "save":
-            self.save_manager.save_game(value, self.player, self.rooms)
-            messages.append(f"{GREEN}Game saved to slot {value}.{RESET}")
+            message = self.save_manager.save(value, self.player, self.rooms)
+            messages.append(f"{GREEN}{message}{RESET}")
 
         elif action == "load":
-            loaded = self.save_manager.load_game(value, self.rooms, self.player)
-            if loaded:
-                messages.append(f"{GREEN}Game loaded from slot {value}.{RESET}")
+            success, message = self.save_manager.load(value, self.rooms, self.player)
+
+            if success:
+                messages.append(f"{GREEN}{message}{RESET}")
                 messages.extend(self._render_room())
             else:
-                messages.append(f"{RED}Save slot not found: {value}{RESET}")
+                messages.append(f"{RED}{message}{RESET}")
 
         elif action == "help":
             messages.append(
@@ -279,4 +276,4 @@ class Game:
             self.game_over = True
 
         finally:
-            self.conn.close()
+            self.save_manager.close()
