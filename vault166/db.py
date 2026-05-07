@@ -57,7 +57,7 @@ def initialize_db(conn) -> None:
     conn.commit()
 
 
-def view_saves(conn):
+def view_saves(conn) -> list[tuple[str, str]]:
     """Returns a list of save slots with their last save time."""
     rows = conn.execute(
         "SELECT slot_name, last_save FROM saves ORDER BY last_save DESC;"

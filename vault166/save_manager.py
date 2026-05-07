@@ -18,11 +18,13 @@ class SaveManager:
         return view_saves(self.conn)
 
     def save(self, slot_name, player, rooms) -> str:
+        """Saves the current game state to the database."""
         save_game(self.conn, slot_name, player, rooms)
         message = f"Game saved to slot '{slot_name}'."
         return message
 
     def load(self, slot_name, player, rooms) -> tuple[bool, str]:
+        """Loads a game state from the database."""
         success = load_game(self.conn, slot_name, player, rooms)
         if success:
             message = f"Game loaded from slot '{slot_name}'."
@@ -32,6 +34,7 @@ class SaveManager:
         return success, message
 
     def delete(self, slot_name) -> tuple[bool, str]:
+        """Deletes a save slot from the database."""
         success = delete_game(self.conn, slot_name)
         if success:
             message = f"Save slot '{slot_name}' deleted."
@@ -41,4 +44,5 @@ class SaveManager:
         return success, message
 
     def close(self) -> None:
+        """Closes the database connection."""
         self.conn.close()
