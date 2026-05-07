@@ -2,7 +2,7 @@ from vault166.utils import separator, GREEN, BLUE, RED, YELLOW, RESET
 from vault166.player import Player
 from vault166.map import build_map, render_map
 from vault166.input_parser import InputParser
-from vault166.db import get_db_connection, save_game, load_game
+from vault166.save_manager import SaveManager
 from vault166.rules import (
     blocked_by_darkness,
     blocked_by_lock,
@@ -24,7 +24,7 @@ class Game:
         valid_items = {room.item for room in self.rooms.values() if room.item}
         valid_rooms = set(self.rooms.keys())
         self.parser = InputParser(valid_items, valid_rooms, 2)
-        self.conn = get_db_connection()
+        self.save_manager = SaveManager()
 
         self.debug = False  # Set to True to enable debug mode with extra commands.
 
@@ -219,20 +219,38 @@ class Game:
             messages.extend(render_map())
 
         elif action == "save":
-            save_game(self.conn, value, self.player, self.rooms)
-            messages.append(f"{GREEN}Game saved to slot {value}.{RESET}")
+            message = self.save_manager.save(value, self.player, self.rooms)
+            messages.append(f"{GREEN}{message}{RESET}")
 
         elif action == "load":
-            loaded = load_game(self.conn, value, self.rooms, self.player)
-            if loaded:
-                messages.append(f"{GREEN}Game loaded from slot {value}.{RESET}")
+            success, message = self.save_manager.load(value, self.rooms, self.player)
+
+            if success:
+                messages.append(f"{GREEN}{message}{RESET}")
                 messages.extend(self._render_room())
             else:
-                messages.append(f"{RED}Save slot not found: {value}{RESET}")
+                messages.append(f"{RED}{message}{RESET}")
+
+        elif action == "saves":
+            saves = self.save_manager.view()
+            if saves:
+                messages.append(f"{YELLOW}Save Slots:{RESET}")
+                for slot_name, last_save in saves:
+                    messages.append(f" - {slot_name} (Last saved: {last_save})")
+            else:
+                messages.append(f"{YELLOW}No save slots found.{RESET}")
+
+        elif action == "delete":
+            success, message = self.save_manager.delete(value)
+
+            if success:
+                messages.append(f"{GREEN}{message}{RESET}")
+            else:
+                messages.append(f"{RED}{message}{RESET}")
 
         elif action == "help":
             messages.append(
-                f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, save [slot], load [slot], help, exit/quit"
+                f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, save [slot], load [slot], delete [slot], help, exit/quit"
             )
 
         elif action == "exit":
@@ -275,4 +293,4 @@ class Game:
             self.game_over = True
 
         finally:
-            self.conn.close()
+            self.save_manager.close()

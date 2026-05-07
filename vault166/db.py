@@ -14,43 +14,36 @@ def get_db_connection() -> sqlite3.Connection:
 def initialize_db(conn) -> None:
     """Initializes the database with required tables."""
     # SAVES table
-    conn.execute(
-        """
+    conn.execute("""
         CREATE TABLE IF NOT EXISTS saves (
             save_id INTEGER PRIMARY KEY AUTOINCREMENT,
             slot_name TEXT NOT NULL UNIQUE,
             last_save TEXT NOT NULL
         );
-    """
-    )
+    """)
 
     # PLAYER_STATE table
-    conn.execute(
-        """
+    conn.execute("""
         CREATE TABLE IF NOT EXISTS player_state (
             save_id INTEGER PRIMARY KEY,
             current_room TEXT NOT NULL,
             health INTEGER NOT NULL,
             FOREIGN KEY (save_id) REFERENCES saves(save_id) ON DELETE CASCADE
         );
-    """
-    )
+    """)
 
     # INVENTORY table
-    conn.execute(
-        """
+    conn.execute("""
         CREATE TABLE IF NOT EXISTS inventory (
             save_id INTEGER NOT NULL,
             item_name TEXT NOT NULL,
             PRIMARY KEY (save_id, item_name),
             FOREIGN KEY (save_id) REFERENCES saves(save_id) ON DELETE CASCADE
         );
-    """
-    )
+    """)
 
     # ROOM_STATE table
-    conn.execute(
-        """
+    conn.execute("""
         CREATE TABLE IF NOT EXISTS room_state (
             save_id INTEGER NOT NULL,
             room_name TEXT NOT NULL,
@@ -59,10 +52,17 @@ def initialize_db(conn) -> None:
             PRIMARY KEY (save_id, room_name),
             FOREIGN KEY (save_id) REFERENCES saves(save_id) ON DELETE CASCADE
         );
-    """
-    )
+    """)
 
     conn.commit()
+
+
+def view_saves(conn) -> list[tuple[str, str]]:
+    """Returns a list of save slots with their last save time."""
+    rows = conn.execute(
+        "SELECT slot_name, last_save FROM saves ORDER BY last_save DESC;"
+    ).fetchall()
+    return rows
 
 
 def save_game(conn, slot_name, player, rooms) -> None:
@@ -167,5 +167,23 @@ def load_game(conn, slot_name, rooms, player) -> bool:
         if room_name in rooms:
             rooms[room_name].item = room_state[1]
             rooms[room_name].read_note = bool(room_state[2])
+
+    return True
+
+
+def delete_game(conn, slot_name) -> bool:
+    """Deletes a save slot from the database.
+    Returns True if deleted, False if not found."""
+    row = conn.execute(
+        "SELECT save_id FROM saves WHERE slot_name = ?;",
+        (slot_name,),
+    ).fetchone()
+
+    if row is None:
+        return False
+
+    save_id = row[0]
+    conn.execute("DELETE FROM saves WHERE save_id = ?;", (save_id,))
+    conn.commit()
 
     return True

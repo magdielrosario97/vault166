@@ -70,6 +70,17 @@ class InputParser:
             slot_name = tokens[1]
             return "load", slot_name
 
+        # Handle view saves - "saves"
+        if verb == "saves":
+            return "saves", None
+
+        # Handle delete save - "delete [slot_name]"
+        if verb == "delete":
+            if len(tokens) < 2:
+                return "delete", "main"
+            slot_name = tokens[1]
+            return "delete", slot_name
+
         # Handle map command - "map"
         if verb == "map":
             return "map", None

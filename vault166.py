@@ -11,14 +11,9 @@ Refactor started March 2026 (In progress)
 
 from vault166.game import Game
 from vault166.utils import welcome
-from vault166.db import get_db_connection, initialize_db
 
 
 def vault166():
-    conn = get_db_connection()
-    initialize_db(conn)
-    conn.close()
-
     game = Game()
     game.run()
 
