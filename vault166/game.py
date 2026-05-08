@@ -223,7 +223,7 @@ class Game:
             messages.append(f"{GREEN}{message}{RESET}")
 
         elif action == "load":
-            success, message = self.save_manager.load(value, self.rooms, self.player)
+            success, message = self.save_manager.load(value, self.player, self.rooms)
 
             if success:
                 messages.append(f"{GREEN}{message}{RESET}")

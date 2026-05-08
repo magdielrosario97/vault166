@@ -118,7 +118,7 @@ def save_game(conn, slot_name, player, rooms) -> None:
     conn.commit()
 
 
-def load_game(conn, slot_name, rooms, player) -> bool:
+def load_game(conn, slot_name, player, rooms) -> bool:
     """Loads a save slot into the current game objects.
     Returns True if loaded, False if slot not found."""
     row = conn.execute(
