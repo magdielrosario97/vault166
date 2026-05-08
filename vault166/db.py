@@ -4,9 +4,9 @@ from datetime import datetime
 DB_NAME = "vault166.db"
 
 
-def get_db_connection() -> sqlite3.Connection:
+def get_db_connection(db_path: str = DB_NAME) -> sqlite3.Connection:
     """Establishes and returns a database connection with foreign key support."""
-    conn = sqlite3.connect(DB_NAME)
+    conn = sqlite3.connect(db_path)
     conn.execute("PRAGMA foreign_keys = ON;")
     return conn
 
@@ -118,7 +118,7 @@ def save_game(conn, slot_name, player, rooms) -> None:
     conn.commit()
 
 
-def load_game(conn, slot_name, rooms, player) -> bool:
+def load_game(conn, slot_name, player, rooms) -> bool:
     """Loads a save slot into the current game objects.
     Returns True if loaded, False if slot not found."""
     row = conn.execute(
