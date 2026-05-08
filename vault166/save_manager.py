@@ -1,4 +1,5 @@
 from vault166.db import (
+    DB_NAME,
     get_db_connection,
     initialize_db,
     view_saves,
@@ -9,8 +10,8 @@ from vault166.db import (
 
 
 class SaveManager:
-    def __init__(self):
-        self.conn = get_db_connection()
+    def __init__(self, db_path: str = DB_NAME):
+        self.conn = get_db_connection(db_path)
         initialize_db(self.conn)
 
     def view(self) -> list[tuple[str, str]]:
