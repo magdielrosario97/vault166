@@ -15,6 +15,7 @@ Players explore a vault environment, collect critical items, survive environment
 - Modular input parsing with command normalization
 - Rule-based movement restrictions and hazard evaluation
 - Inventory management using efficient data structures
+- SQLite-backed save and load system with named slots
 - In-game map and help commands
 - Clean exit handling without relying on keyboard interruption
 
@@ -22,12 +23,14 @@ Players explore a vault environment, collect critical items, survive environment
 
 The project is organized into distinct modules, each responsible for a specific aspect of the game:
 
-- `game.py`: Controls the main game loop, command processing, and output flow
+- `game.py`: Controls the main game loop, command processing, and routes all output through a centralized display method
 - `input_parser.py`: Normalizes and validates player input using tokenization, alias mapping, and prefix matching
 - `rules.py`: Encapsulates gameplay rules such as hazards, locked areas, and boss conditions
 - `map.py`: Builds the room graph and provides a static minimap reference
 - `room.py`: Defines room state and properties
 - `player.py`: Tracks player state including inventory and health
+- `save_manager.py`: Manages save and load operations, delegating persistence to the database layer
+- `db.py`: Handles all SQLite database operations including saves, inventory, and room state
 - `utils.py`: Handles shared output helpers and formatting
 - `vault166.py`: Entry point for running the game
 
@@ -51,6 +54,10 @@ python vault166.py
 
 - `go <direction>`: Move in a direction (supports short and partial forms)
 - `get <item>`: Pick up an item in the current room
+- `save [slot]`: Save the game to a named slot (defaults to `main`)
+- `load [slot]`: Load a saved game from a named slot (defaults to `main`)
+- `delete [slot]`: Delete a save slot
+- `saves`: List all save slots
 - `map`: Display a compact vault map
 - `help`: Display available commands
 - `exit` or `quit`: End the game safely
