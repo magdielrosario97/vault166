@@ -184,6 +184,9 @@ class InputParser:
 
     def normalize_room(self, in_room: str) -> str | None:
         """Converts input room name to a valid room name or returns None if invalid or ambiguous."""
+        if in_room in self.valid_rooms:
+            return in_room
+
         if len(in_room) < self.min_item_chars:
             return None
 
