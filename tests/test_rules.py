@@ -11,7 +11,7 @@ from vault166.rules import (
 
 
 def create_player(*items) -> Player:
-    player = Player(create_room)
+    player = Player(create_room())
     player.inventory.update(items)
     return player
 
