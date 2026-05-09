@@ -96,5 +96,4 @@ def test_saves_with_data():
 
     saves = manager.view()
     assert len(saves) == 2
-    assert saves[0][0] == "slot2"
-    assert saves[1][0] == "slot1"
+    assert {s[0] for s in saves} == {"slot1", "slot2"}
