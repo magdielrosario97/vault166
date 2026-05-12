@@ -1,4 +1,4 @@
-from vault166.utils import separator, GREEN, BLUE, RED, YELLOW, RESET
+from vault166.utils import separator, display, GREEN, BLUE, RED, YELLOW, RESET
 from vault166.player import Player
 from vault166.map import build_map, render_map
 from vault166.input_parser import InputParser
@@ -27,11 +27,6 @@ class Game:
         self.save_manager = SaveManager()
 
         self.debug = False  # Set to True to enable debug mode with extra commands.
-
-    def _display_messages(self, messages: list[str]) -> None:
-        """Utility method to display a message to the player."""
-        for message in messages:
-            print(message)
 
     def _handle_move(self, direction: str) -> list[str]:
         """Handles player movement in the given direction, applying game rules and consequences."""
@@ -267,29 +262,28 @@ class Game:
     def run(self):
         """Starts the main game loop, rendering the initial room and processing player commands until the game is over."""
         try:
-            self._display_messages(self._render_room())
+            display(self._render_room())
 
             while not self.game_over:
-                separator()
-                self._display_messages(self._render_status())
-                separator()
+                display(separator())
+                display(self._render_status())
+                display(separator())
 
                 command = input("Enter your command: ")
-                separator()
+                display(separator())
 
                 action, messages = self.process_command(command)
-                self._display_messages(messages)
+                display(messages)
 
                 if self.game_over:
                     break
 
                 if action in {"move", "get"}:
-                    self._display_messages(self._render_room())
+                    display(self._render_room())
 
+        # TODO: fix exit message printing on same line as user input
         except KeyboardInterrupt:
-            self._display_messages(
-                [f"\n{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}"]
-            )
+            display([f"{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}"])
             self.game_over = True
 
         finally:
