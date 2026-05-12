@@ -36,9 +36,11 @@ def welcome() -> list[str]:
     messages.extend(separator())
     messages.append(f"{BLUE}Welcome to Vault 166 - Text Based Game{RESET}")
     messages.append("Survive the vault and gather the key items needed to win.")
-    messages.append("Move: go <direction>   Example: go north, go n, go up")
-    messages.append("Get:  get <item>        Example: get flashlight, get fl")
-    messages.append("Other: map, save [slot], load [slot], help, quit")
+    messages.append("Move:  go <direction>   Example: go north, go n, go up")
+    messages.append("Get:   get <item>       Example: get flashlight, get fl")
+    messages.append(
+        "Other: map, saves, save [slot], load [slot], delete [slot], help, quit"
+    )
     messages.extend(separator())
 
     return messages
