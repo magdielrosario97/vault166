@@ -10,7 +10,7 @@ Refactor started March 2026 (In progress)
 """
 
 from vault166.game import Game
-from vault166.utils import welcome
+from vault166.utils import welcome, display
 
 
 def vault166():
@@ -19,7 +19,7 @@ def vault166():
 
 
 def main():
-    welcome()
+    display(welcome())
     vault166()
 
 
