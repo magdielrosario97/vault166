@@ -18,6 +18,7 @@ def scenario(title: str) -> None:
 
 
 def run_commands(game: Game, commands: list[str]) -> None:
+    """Runs a list of commands through the game, displaying outputs."""
     for command in commands:
         print(f"> {command}")
         action, messages = game.process_command(command)
