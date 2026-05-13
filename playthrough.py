@@ -32,7 +32,7 @@ def run_commands(game: Game, commands: list[str]) -> None:
 # Scenario: Player Movement
 scenario("Player Movement")
 game = Game()
-run_commands(game, ["go south", "go east", "go north", "go south"])
+run_commands(game, ["go south", "go west", "go east", "go north", "go south"])
 
 # Scenario: Item Interaction
 scenario("Item Interaction")
@@ -58,6 +58,62 @@ run_commands(
         "saves",
         "load nonexistent",
         "delete nonexistent",
+    ],
+)
+
+# Scenario: Death - Darkness
+scenario("Death by Darkness")
+game = Game()
+run_commands(game, ["go south", "go south", "go south", "go south", "go south"])
+
+# Scenario: Death - Gas
+scenario("Death by Gas")
+game = Game()
+game.debug = True  # Enable debug mode to bypass death and continue testing
+run_commands(
+    game,
+    [
+        "add flashlight",
+        "tp Atrium",
+        "go west",
+        "go east",
+        "go west",
+        "go east",
+        "go west",
+        "go east",
+        "go west",
+    ],
+)
+
+# Scenario: Death - Radiation
+scenario("Death by Radiation")
+game = Game()
+game.debug = True  # Enable debug mode to bypass death and continue testing
+run_commands(
+    game,
+    [
+        "add mask",
+        "tp West Wing",
+        "go north",
+        "go south",
+        "go north",
+        "go south",
+        "go north",
+        "go south",
+        "go north",
+    ],
+)
+
+# Scenario: Death - Boss
+scenario("Death by Boss")
+game = Game()
+game.debug = True
+run_commands(
+    game,
+    [
+        "add keycard",
+        "tp West Wing",
+        "go west",
     ],
 )
 
