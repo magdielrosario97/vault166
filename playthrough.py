@@ -140,7 +140,54 @@ game = Game()
 run_commands(game, ["", "unknown", "go", "go xyz", "get", "get xyz"])
 
 # Scenario: Win Path - Debug
-scenario("Winner, Winner, Chicken Dinner")
+scenario("Winner, Winner, Cheater Dinner")
 game = Game()
 game.debug = True
 run_commands(game, ["godmode", "tp West Wing", "go west"])
+
+# Scenario: Win Path - Full Playthrough
+scenario("Winner, Winner, Chicken Dinner")
+game = Game()
+run_commands(
+    game,
+    [
+        "go south",  # VE -> DE
+        "go west",  # DE -> ST
+        "get flashlight",
+        "go east",  # ST -> DE
+        "go south",  # DE -> AT
+        "go east",  # AT -> EW
+        "go east",  # EW -> LQ
+        "get keycard",
+        "go west",  # LQ -> EW
+        "go north",  # EW -> MD
+        "get mask",
+        "go south",  # MD -> EW
+        "go south",  # EW -> CF (cafeteria note)
+        "go north",  # CF -> EW
+        "go west",  # EW -> AT
+        "go south",  # AT -> ER
+        "get hazmat_suit",
+        "go north",  # ER -> AT
+        "go west",  # AT -> WW
+        "go north",  # WW -> CH
+        "get acid",
+        "go south",  # CH -> WW
+        "go south",  # WW -> EX
+        "get fusion_core",
+        "go north",  # EX -> WW
+        "go east",  # WW -> AT
+        "go north",  # AT -> DE
+        "go east",  # DE -> SE
+        "get id_tag",
+        "go west",  # SE -> DE
+        "go south",  # DE -> AT
+        "go south",  # AT -> ER
+        "go south",  # ER -> AR
+        "get radzapper",
+        "go north",  # AR -> ER
+        "go north",  # ER -> AT
+        "go west",  # AT -> WW
+        "go west",  # WW -> RD (win!)
+    ],
+)
