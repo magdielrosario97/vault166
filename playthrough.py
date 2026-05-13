@@ -118,6 +118,17 @@ run_commands(
     ],
 )
 
+# Scenario: Blocked Path - Locked Door
+scenario("Blocked by Locked Door")
+game = Game()
+run_commands(game, ["go south", "go east"])
+
+# Scenario: Blocked Path - Armory Lock
+scenario("Blocked by Armory Lock")
+game = Game()
+game.debug = True
+run_commands(game, ["tp Emergency Response", "go south"])
+
 # Scenario: Map and Help Commands
 scenario("Map and Help Commands")
 game = Game()
