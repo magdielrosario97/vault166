@@ -40,27 +40,16 @@ scenario("Item Interaction")
 game = Game()
 run_commands(game, ["go south", "go west", "get flashlight", "get key", "get f"])
 
-# Scenario: Game Save Management
-scenario("Game Save Management")
+# Scenario: Blocked Path - Locked Door
+scenario("Blocked by Locked Door")
 game = Game()
-run_commands(
-    game,
-    [
-        "save test",
-        "saves",
-        "go south",
-        "load test",
-        "saves",
-        "delete test",
-        "saves",
-        "save",
-        "load",
-        "delete",
-        "saves",
-        "load nonexistent",
-        "delete nonexistent",
-    ],
-)
+run_commands(game, ["go south", "go east"])
+
+# Scenario: Blocked Path - Armory Lock
+scenario("Blocked by Armory Lock")
+game = Game()
+game.debug = True
+run_commands(game, ["tp Emergency Response", "go south"])
 
 # Scenario: Death - Darkness
 scenario("Death by Darkness")
@@ -118,17 +107,6 @@ run_commands(
     ],
 )
 
-# Scenario: Blocked Path - Locked Door
-scenario("Blocked by Locked Door")
-game = Game()
-run_commands(game, ["go south", "go east"])
-
-# Scenario: Blocked Path - Armory Lock
-scenario("Blocked by Armory Lock")
-game = Game()
-game.debug = True
-run_commands(game, ["tp Emergency Response", "go south"])
-
 # Scenario: Map and Help Commands
 scenario("Map and Help Commands")
 game = Game()
@@ -138,6 +116,28 @@ run_commands(game, ["map", "help"])
 scenario("Invalid Commands")
 game = Game()
 run_commands(game, ["", "unknown", "go", "go xyz", "get", "get xyz"])
+
+# Scenario: Game Save Management
+scenario("Game Save Management")
+game = Game()
+run_commands(
+    game,
+    [
+        "save test",
+        "saves",
+        "go south",
+        "load test",
+        "saves",
+        "delete test",
+        "saves",
+        "save",
+        "load",
+        "delete",
+        "saves",
+        "load nonexistent",
+        "delete nonexistent",
+    ],
+)
 
 # Scenario: Win Path - Debug
 scenario("Winner, Winner, Cheater Dinner")
