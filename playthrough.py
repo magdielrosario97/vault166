@@ -138,3 +138,9 @@ run_commands(game, ["map", "help"])
 scenario("Invalid Commands")
 game = Game()
 run_commands(game, ["", "unknown", "go", "go xyz", "get", "get xyz"])
+
+# Scenario: Win Path - Debug
+scenario("Winner, Winner, Chicken Dinner")
+game = Game()
+game.debug = True
+run_commands(game, ["godmode", "tp West Wing", "go west"])
