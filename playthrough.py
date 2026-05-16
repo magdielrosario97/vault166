@@ -5,22 +5,22 @@ Each scenario creates a fresh Game instance to ensure isolated state.
 """
 
 from vault166.game import Game
-from vault166.utils import display
+from vault166.utils import display, RED, YELLOW, GREEN, RESET
 
-SCENARIO_WIDTH = 60
+SCENARIO_WIDTH = 80
 
 
 def scenario(title: str) -> None:
     """Prints a labeled scenario header."""
-    print(f"\n{'=' * SCENARIO_WIDTH}")
-    print(f"  SCENARIO: {title}")
-    print(f"{'=' * SCENARIO_WIDTH}\n")
+    print(f"{GREEN}\n{'=' * SCENARIO_WIDTH}")
+    print(f"SCENARIO: {title}".center(SCENARIO_WIDTH))
+    print(f"{'=' * SCENARIO_WIDTH}{RESET}\n")
 
 
 def run_commands(game: Game, commands: list[str]) -> None:
     """Runs a list of commands through the game, displaying outputs."""
     for command in commands:
-        print(f"> {command}")
+        print(f"{RED}>{RESET} {YELLOW}{command}{RESET}")
         action, messages = game.process_command(command)
         display(messages)
         if action in {"move", "get"}:
