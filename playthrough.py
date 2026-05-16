@@ -33,12 +33,24 @@ def run_commands(game: Game, commands: list[str]) -> None:
 # Scenario: Player Movement
 scenario("Player Movement")
 game = Game()
-run_commands(game, ["go south", "go west", "go east", "go north", "go south"])
+run_commands(game, ["go south", "go west", "go east", "go north", "go north"])
 
 # Scenario: Item Interaction
 scenario("Item Interaction")
 game = Game()
-run_commands(game, ["go south", "go west", "get flashlight", "get key", "get f"])
+run_commands(
+    game,
+    [
+        "go south",
+        "go west",
+        "get flashlight",
+        "get flashlight",  # Attempt to get an already taken item
+        "get key",  # Attempt to get an item that doesn't exist in the room
+        "get f",
+        "go east",
+        "get flashlight",
+    ],
+)
 
 # Scenario: Blocked Path - Locked Door
 scenario("Blocked by Locked Door")
@@ -111,6 +123,11 @@ run_commands(
 scenario("Map and Help Commands")
 game = Game()
 run_commands(game, ["map", "help"])
+
+# Scenario: Exit Command
+scenario("Exit Command")
+game = Game()
+run_commands(game, ["exit"])
 
 # Scenario: Invalid Commands
 scenario("Invalid Commands")
