@@ -18,7 +18,7 @@ def scenario(title: str) -> None:
 
 
 def run_commands(game: Game, commands: list[str]) -> None:
-    """Runs a list of commands through the game, displaying outputs."""
+    """Feeds commands to the game and displays room, status, and output for each turn."""
     for command in commands:
         _, messages = game.process_command(command)
         print(f"-" * SCENARIO_WIDTH)
@@ -62,7 +62,7 @@ run_commands(game, ["go south", "go east"])
 # Scenario: Blocked Path - Armory Lock
 scenario("Blocked by Armory Lock")
 game = Game()
-game.debug = True
+game.debug = True  # Enable debug mode to quickly set up scenario
 run_commands(game, ["tp Emergency Response", "go south"])
 
 # Scenario: Death - Darkness
@@ -73,7 +73,7 @@ run_commands(game, ["go south", "go south", "go south", "go south", "go south"])
 # Scenario: Death - Gas
 scenario("Death by Gas")
 game = Game()
-game.debug = True  # Enable debug mode to bypass death and continue testing
+game.debug = True
 run_commands(
     game,
     [
@@ -92,7 +92,7 @@ run_commands(
 # Scenario: Death - Radiation
 scenario("Death by Radiation")
 game = Game()
-game.debug = True  # Enable debug mode to bypass death and continue testing
+game.debug = True
 run_commands(
     game,
     [
@@ -210,3 +210,7 @@ run_commands(
         "go west",  # WW -> RD (win!)
     ],
 )
+
+print(f"{GREEN}\n{'=' * SCENARIO_WIDTH}")
+print(f"Playthrough Complete".center(SCENARIO_WIDTH))
+print(f"{'=' * SCENARIO_WIDTH}{RESET}\n")
