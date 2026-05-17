@@ -20,14 +20,14 @@ def scenario(title: str) -> None:
 def run_commands(game: Game, commands: list[str]) -> None:
     """Runs a list of commands through the game, displaying outputs."""
     for command in commands:
+        _, messages = game.process_command(command)
+        print(f"-" * SCENARIO_WIDTH)
+        display(game._render_room())
+        print(f"-" * SCENARIO_WIDTH)
         display(game._render_status())
         print(f"-" * SCENARIO_WIDTH)
         print(f"{RED}>{RESET} {YELLOW}{command}{RESET}")
-        action, messages = game.process_command(command)
         display(messages)
-        if action in {"move", "get"}:
-            display(game._render_room())
-        print()
         if game.game_over:
             break
 
