@@ -21,6 +21,11 @@ def wrap(message: str) -> str:
     return textwrap.fill(message, width=WIDTH)
 
 
+def empty_line(lines: int = 1) -> list[str]:
+    """Returns a list of empty strings to create blank lines in the game output."""
+    return [""] * lines
+
+
 def separator() -> list[str]:
     """Returns a list containing a separator line to be used in the game output."""
     messages = []
