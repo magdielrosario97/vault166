@@ -7,7 +7,6 @@ YELLOW = "\033[93m"
 RESET = "\033[0m"
 
 WIDTH = 80
-SEPARATOR = "-" * 80
 
 
 def display(messages: list[str]) -> None:
@@ -26,11 +25,11 @@ def empty_line(lines: int = 1) -> list[str]:
     return [""] * lines
 
 
-def separator() -> list[str]:
+def separator(symbol: str = "-") -> list[str]:
     """Returns a list containing a separator line to be used in the game output."""
     messages = []
 
-    messages.append(f"{SEPARATOR}")
+    messages.append(f"{symbol * WIDTH}")
     return messages
 
 
@@ -46,6 +45,5 @@ def welcome() -> list[str]:
     messages.append(
         "Other: map, saves, save [slot], load [slot], delete [slot], help, quit"
     )
-    messages.extend(separator())
 
     return messages
