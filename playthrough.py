@@ -5,29 +5,30 @@ Each scenario creates a fresh Game instance to ensure isolated state.
 """
 
 from vault166.game import Game
-from vault166.utils import display, RED, YELLOW, GREEN, RESET
-
-SCENARIO_WIDTH = 80
+from vault166.utils import display, separator, RED, YELLOW, GREEN, RESET
 
 
 def scenario(title: str) -> None:
     """Prints a labeled scenario header."""
-    print(f"{GREEN}\n{'=' * SCENARIO_WIDTH}")
-    print(f"SCENARIO: {title}".center(SCENARIO_WIDTH))
-    print(f"{'=' * SCENARIO_WIDTH}{RESET}\n")
+    print(separator("="))
+    print(f"SCENARIO: {title}".center(80))
+    print(separator("="))
 
 
 def run_commands(game: Game, commands: list[str]) -> None:
     """Feeds commands to the game and displays room, status, and output for each turn."""
+
     for command in commands:
-        _, messages = game.process_command(command)
-        print(f"-" * SCENARIO_WIDTH)
         display(game._render_room())
-        print(f"-" * SCENARIO_WIDTH)
         display(game._render_status())
-        print(f"-" * SCENARIO_WIDTH)
+
         print(f"{RED}>{RESET} {YELLOW}{command}{RESET}")
-        display(messages)
+
+        action, messages = game.process_command(command)
+
+        if action in {"move", "get"}:
+            display(messages)
+
         if game.game_over:
             break
 
@@ -211,6 +212,6 @@ run_commands(
     ],
 )
 
-print(f"{GREEN}\n{'=' * SCENARIO_WIDTH}")
-print(f"Playthrough Complete".center(SCENARIO_WIDTH))
-print(f"{'=' * SCENARIO_WIDTH}{RESET}\n")
+display(separator("="))
+print(f"Playthrough Complete".center(80))
+display(separator("="))
