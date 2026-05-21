@@ -5,14 +5,14 @@ Each scenario creates a fresh Game instance to ensure isolated state.
 """
 
 from vault166.game import Game
-from vault166.utils import display, separator, RED, YELLOW, GREEN, RESET
+from vault166.utils import welcome, display, separator, RED, YELLOW, GREEN, RESET
 
 
 def scenario(title: str) -> None:
     """Prints a labeled scenario header."""
-    print(separator("="))
+    display(separator("="))
     print(f"SCENARIO: {title}".center(80))
-    print(separator("="))
+    display(separator("="))
 
 
 def run_commands(game: Game, commands: list[str]) -> None:
@@ -168,6 +168,7 @@ run_commands(game, ["godmode", "tp West Wing", "go west"])
 # Scenario: Win Path - Full Playthrough
 scenario("Winner, Winner, Chicken Dinner")
 game = Game()
+display(welcome())
 run_commands(
     game,
     [
