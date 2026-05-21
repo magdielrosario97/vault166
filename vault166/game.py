@@ -1,4 +1,12 @@
-from vault166.utils import separator, display, GREEN, BLUE, RED, YELLOW, RESET
+from vault166.utils import (
+    separator,
+    display,
+    GREEN,
+    BLUE,
+    RED,
+    YELLOW,
+    RESET,
+)
 from vault166.player import Player
 from vault166.map import build_map, render_map
 from vault166.input_parser import InputParser
@@ -265,12 +273,9 @@ class Game:
             display(self._render_room())
 
             while not self.game_over:
-                display(separator())
                 display(self._render_status())
-                display(separator())
 
                 command = input("Enter your command: ")
-                display(separator())
 
                 action, messages = self.process_command(command)
                 display(messages)
