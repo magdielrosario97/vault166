@@ -1,4 +1,5 @@
 from vault166.utils import (
+    empty_line,
     separator,
     display,
     GREEN,
@@ -49,10 +50,12 @@ class Game:
 
         if blocked_by_darkness(self.player, next_room):
             self.player.take_damage(DAMAGE)
-            messages.append(f"{RED}It is too dark. You trip and fall.{RESET}")
-            messages.append(f"{RED}-{DAMAGE} health{RESET}")
+            messages.append(
+                f"{RED}It is too dark. You trip and fall. | -{DAMAGE} health{RESET}"
+            )
 
             if not self.player.is_alive():
+                messages.extend(empty_line())
                 messages.append(f"{RED}You collapsed. Game over!{RESET}")
                 self.game_over = True
             return messages
@@ -70,16 +73,21 @@ class Game:
         current_room = self.player.current_room
 
         if boss_room(current_room):
-            messages.append(current_room.description)
             if has_boss_items(self.player):
+                messages.append(f"{GREEN}{current_room.description}{RESET}")
+                messages.extend(empty_line())
                 messages.append(
                     f"{GREEN}Congratulations! You encountered and defeated Maradonyx.{RESET}"
                 )
+                messages.extend(empty_line())
                 messages.append(
                     f"{GREEN}With the threat neutralized, you recover the schematics and make your way out of Vault 166.{RESET}"
                 )
+                messages.extend(empty_line())
                 messages.append(f"{GREEN}You win!{RESET}")
             else:
+                messages.append(f"{RED}{current_room.description}{RESET}")
+                messages.extend(empty_line())
                 messages.append(
                     f"{RED}You encountered Maradonyx unprepared. Game over!{RESET}"
                 )
@@ -90,9 +98,11 @@ class Game:
 
         if damage:
             self.player.take_damage(damage)
-            messages.append(f"{RED}The environment harms you.{RESET}")
-            messages.append(f"{RED}-{damage} health{RESET}")
+            messages.append(
+                f"{RED}The environment harms you. | -{damage} health{RESET}"
+            )
             if not self.player.is_alive():
+                messages.extend(empty_line())
                 messages.append(f"{RED}You collapsed. Game over!{RESET}")
                 self.game_over = True
                 return messages
@@ -121,11 +131,18 @@ class Game:
         messages.append(room.description)
 
         if room.note and not room.read_note:
+            messages.extend(empty_line())
+            messages.extend(separator("*"))
             messages.append(room.note)
+            messages.extend(separator("*"))
+
             room.read_note = True
 
         if room.item is not None:
-            messages.append(f"You see a {BLUE}{room.item}{RESET} in the room.")
+            messages.extend(empty_line())
+            messages.append(
+                f"\u269e You see a {BLUE}{room.item}{RESET} in the room \u269f"
+            )
 
         return messages
 
@@ -136,7 +153,6 @@ class Game:
         if action == "tp":
             self.player.current_room = self.rooms[value]
             messages.append(f"{GREEN}Teleported to {value}{RESET}")
-            messages.extend(self._render_room())
             return messages
 
         if action == "add":
@@ -230,7 +246,6 @@ class Game:
 
             if success:
                 messages.append(f"{GREEN}{message}{RESET}")
-                messages.extend(self._render_room())
             else:
                 messages.append(f"{RED}{message}{RESET}")
 
@@ -257,8 +272,14 @@ class Game:
             )
 
         elif action == "exit":
-            messages.append(
-                f"{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}"
+            messages.extend(empty_line(10))
+            messages.extend(
+                [
+                    f"{GREEN}\u2605 \u2605 Exiting game... Thanks for playing Vault 166! \u2605 \u2605{RESET}".center(
+                        80
+                    ),
+                    f"{GREEN}\u2764 \u2764 \u2764{RESET}".center(80),
+                ]
             )
             self.game_over = True
 
@@ -267,28 +288,41 @@ class Game:
 
         return action, messages
 
+    # BUG: saves with default slot name are deleted on game exit - need to ensure default saves are preserved
     def run(self):
         """Starts the main game loop, rendering the initial room and processing player commands until the game is over."""
         try:
-            display(self._render_room())
-
             while not self.game_over:
+
+                display(separator("="))
                 display(self._render_status())
+                display(separator("-"))
+                display(self._render_room())
+                display(empty_line())
 
-                command = input("Enter your command: ")
+                command = input(f"{GREEN}> Enter your command: {RESET}")
 
-                action, messages = self.process_command(command)
-                display(messages)
+                _, messages = self.process_command(command)
+
+                if messages:
+                    display(empty_line())
+                    display(messages)
 
                 if self.game_over:
                     break
 
-                if action in {"move", "get"}:
-                    display(self._render_room())
+                display(empty_line(4))
 
-        # TODO: fix exit message printing on same line as user input
         except KeyboardInterrupt:
-            display([f"{GREEN}Exiting game... Thanks for playing Vault 166!{RESET}"])
+            display(empty_line(10))
+            display(
+                [
+                    f"{GREEN}\u2605 \u2605 Exiting game... Thanks for playing Vault 166! \u2605 \u2605{RESET}".center(
+                        80
+                    ),
+                    f"{GREEN}\u2764 \u2764 \u2764{RESET}".center(80),
+                ]
+            )
             self.game_over = True
 
         finally:
