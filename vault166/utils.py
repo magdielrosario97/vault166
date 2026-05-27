@@ -39,7 +39,7 @@ def empty_line(lines: int = 1) -> list[str]:
     return [""] * lines
 
 
-def separator(symbol: str = "-", color: str = GREEN) -> list[str]:
+def separator(symbol: str = "─", color: str = AMBER_DIM) -> list[str]:
     """Returns a list containing a separator line made of the specified symbol and color, spanning the defined WIDTH."""
     messages = []
 
