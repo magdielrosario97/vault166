@@ -9,10 +9,13 @@ RESET = "\033[0m"
 WIDTH = 80
 
 
-def display(messages: list[str]) -> None:
-    """Utility method to display a message to the player."""
+def display(messages: list[str], wrap_text: bool = False) -> None:
+    """Utility function to display messages to the player, with optional text wrapping."""
     for message in messages:
-        print(wrap(message))
+        if wrap_text:
+            print(wrap(message))
+        else:
+            print(message)
 
 
 def wrap(message: str) -> str:
