@@ -52,6 +52,30 @@ def welcome() -> list[str]:
     """Returns a list of welcome messages to be displayed at the start of the game."""
     messages = []
 
+    messages.extend(
+        [
+            *separator("\u2593"),
+            f"{AMBER}{BLINK}{f'{STAR} Welcome to Vault 166 {STAR}'.center(WIDTH)}{RESET}",
+            *separator("\u2593"),
+            *empty_line(),
+            f"{OLIVE}{f'Survive the vault and gather the key items needed to win!'.center(WIDTH)}{RESET}",
+            *empty_line(),
+            f"{AMBER}Commands{RESET}",
+            *separator(),
+            f"{AMBER}  Move:{RESET}      go <direction>      Example: go north, go n, go up",
+            f"{AMBER}  Get:{RESET}       get <item>          Example: get flashlight, get fl",
+            f"{AMBER}  Save:{RESET}      save [slot]         Example: save, save test",
+            f"{AMBER}  Load:{RESET}      load [slot]         Example: load, load test",
+            f"{AMBER}  Delete:{RESET}    delete [slot]       Example: delete test",
+            f"{AMBER}  Other:{RESET}     map, saves, help, quit",
+            *separator(),
+            *empty_line(),
+        ]
+    )
+
+    return messages
+
+
 def farewell() -> list[str]:
     """Returns a list of farewell messages to be displayed at the end of the game."""
     messages = []
