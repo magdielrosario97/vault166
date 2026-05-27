@@ -34,17 +34,15 @@ def run_commands(game: Game, commands: list[str]) -> None:
         display(game._render_status())
         display(separator("-"))
         display(game._render_room())
-        display(separator("="))
+        display(empty_line())
 
         print(f"{RED}>{RESET} {YELLOW}{command}{RESET}")
 
-        action, messages = game.process_command(command)
+        messages = game.process_command(command)[1]
 
-        if action:
+        if messages:
             display(empty_line())
-            if messages:
-                display(messages)
-                display(empty_line())
+            display(messages)
 
         if game.game_over:
             break
