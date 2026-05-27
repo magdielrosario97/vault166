@@ -28,11 +28,12 @@ def empty_line(lines: int = 1) -> list[str]:
     return [""] * lines
 
 
-def separator(symbol: str = "-") -> list[str]:
-    """Returns a list containing a separator line to be used in the game output."""
+def separator(symbol: str = "-", color: str = GREEN) -> list[str]:
+    """Returns a list containing a separator line made of the specified symbol and color, spanning the defined WIDTH."""
     messages = []
 
-    messages.append(f"{symbol * WIDTH}")
+    messages.append(f"{color}{symbol * WIDTH}{RESET}")
+
     return messages
 
 
