@@ -302,7 +302,7 @@ class Game:
 
                 command = input(f"{GREEN}> Enter your command: {RESET}")
 
-                _, messages = self.process_command(command)
+                messages = self.process_command(command)[1]
 
                 if messages:
                     display(empty_line())
