@@ -2,9 +2,20 @@ import textwrap
 
 BLUE = "\033[94m"
 GREEN = "\033[92m"
-RED = "\033[91m"
 YELLOW = "\033[93m"
+AMBER = "\033[38;5;214m"
+AMBER_DIM = "\033[38;5;136m"
+LIME = "\033[38;5;154m"
+OLIVE = "\033[38;5;100m"
+RED = "\033[91m"
+ORANGE = "\033[38;5;208m"
+TEAL = "\033[38;5;37m"
 RESET = "\033[0m"
+
+STAR = "\u2605"
+HEART = "\u2764"
+
+BLINK = "\033[5m"
 
 WIDTH = 80
 
@@ -41,13 +52,18 @@ def welcome() -> list[str]:
     """Returns a list of welcome messages to be displayed at the start of the game."""
     messages = []
 
-    messages.extend(separator())
-    messages.append(f"{BLUE}Welcome to Vault 166 - Text Based Game{RESET}")
-    messages.append("Survive the vault and gather the key items needed to win.")
-    messages.append("Move:  go <direction>   Example: go north, go n, go up")
-    messages.append("Get:   get <item>       Example: get flashlight, get fl")
-    messages.append(
-        "Other: map, saves, save [slot], load [slot], delete [slot], help, quit"
+def farewell() -> list[str]:
+    """Returns a list of farewell messages to be displayed at the end of the game."""
+    messages = []
+
+    messages.extend(
+        [
+            *empty_line(5),
+            *separator("\u2593"),
+            f"{TEAL}{BLINK}{f'{STAR} {STAR} Exiting game... Thanks for playing Vault 166! {STAR} {STAR}'.center(WIDTH)}{RESET}",
+            f"{TEAL}{f'{HEART} {HEART} {HEART}'.center(WIDTH)}{RESET}",
+            *separator("\u2593"),
+        ]
     )
 
     return messages
