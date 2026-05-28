@@ -1,5 +1,5 @@
 from vault166.room import Room
-from vault166.utils import GREEN, RESET, YELLOW
+from vault166.utils import GREEN, RESET, WIDTH, YELLOW, empty_line, separator
 
 
 def build_map():
@@ -176,38 +176,23 @@ def render_map() -> list[str]:
     """Prints a simple ASCII map of the vault layout."""
     messages = []
 
-    messages.append(
-        f"""{GREEN}
-          Vault 166 Map (North is up)
-                    [VE]
-                    |  |
-              [ST]--[DE]--[SE]
-                    |  |
-              [CH]  |  |  [MD]
-          [RD][WW]--[AT]--[EW][LQ]
-              [EX]  |  |  [CF]
-                    [ER]
-                    [AR]
-
-        {YELLOW}
-        Legend:
-        VE: Vault Entrance
-        DE: Decon
-        ST: Storage
-        SE: Security
-        AT: Atrium
-        EW: East Wing
-        MD: Medical
-        LQ: Living Quarters
-        ER: Emergency Response
-        CF: Cafeteria
-        AR: Armory
-        WW: West Wing
-        CH: Chemical
-        EX: Experimental
-        RD: Research & Development
-        {RESET}
-         """,
+    messages.extend(
+        [
+            *separator(),
+            f"{'Vault 166 Map (North is up)'.center(WIDTH)}",
+            *separator(),
+            *empty_line(),
+            f"{'[VE]'.center(WIDTH)}",
+            f"{'│  │'.center(WIDTH)}",
+            f"{'│  │'.center(WIDTH)}",
+            f"{'[ST]────[DE]────[SE]'.center(WIDTH)}",
+            f"{'│  │'.center(WIDTH)}",
+            f"{'[CH]    │  │    [MD]'.center(WIDTH)}",
+            f"{'│  │    │  │    │  │'.center(WIDTH)}",
+            f"{'[RD]─[WW]────[AT]────[CF]─[LQ]'.center(WIDTH)}",
+            f"{'│  │    │  │    │  │'.center(WIDTH)}",
+            f"{'[EX]    │  │    [ER]'.center(WIDTH)}",
+        ]
     )
 
     return messages
