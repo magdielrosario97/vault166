@@ -1,5 +1,12 @@
 from vault166.room import Room
-from vault166.utils import GREEN, RESET, WIDTH, YELLOW, empty_line, separator
+from vault166.utils import (
+    AMBER,
+    AMBER_DIM,
+    RESET,
+    WIDTH,
+    empty_line,
+    separator,
+)
 
 
 def build_map():
@@ -173,25 +180,33 @@ def build_map():
 
 
 def render_map() -> list[str]:
-    """Prints a simple ASCII map of the vault layout."""
+    """Returns a list of strings representing the map of Vault 166, showing the layout of
+    rooms and their connections, along with a legend for room abbreviations."""
     messages = []
 
     messages.extend(
         [
-            *separator(),
-            f"{'Vault 166 Map (North is up)'.center(WIDTH)}",
+            f"{AMBER}{f'Vault 166 Map (North is up)'}{RESET}",
             *separator(),
             *empty_line(),
-            f"{'[VE]'.center(WIDTH)}",
-            f"{'│  │'.center(WIDTH)}",
-            f"{'│  │'.center(WIDTH)}",
-            f"{'[ST]────[DE]────[SE]'.center(WIDTH)}",
-            f"{'│  │'.center(WIDTH)}",
-            f"{'[CH]    │  │    [MD]'.center(WIDTH)}",
-            f"{'│  │    │  │    │  │'.center(WIDTH)}",
-            f"{'[RD]─[WW]────[AT]────[CF]─[LQ]'.center(WIDTH)}",
-            f"{'│  │    │  │    │  │'.center(WIDTH)}",
-            f"{'[EX]    │  │    [ER]'.center(WIDTH)}",
+            f"{AMBER}{'[VE]'.center(WIDTH)}{RESET}",
+            f"{AMBER}{'│  │'.center(WIDTH)}{RESET}",
+            f"{AMBER}{'[ST]────[DE]────[SE]'.center(WIDTH)}{RESET}",
+            f"{AMBER}{'│  │'.center(WIDTH)}{RESET}",
+            f"{AMBER}{'[CH]    │  │    [MD]'.center(WIDTH)}{RESET}",
+            f"{AMBER}{'│  │    │  │    │  │'.center(WIDTH)}{RESET}",
+            f"{AMBER}{'[RD]─[WW]────[AT]────[EW]─[LQ]'.center(WIDTH)}{RESET}",
+            f"{AMBER}{'│  │    │  │    │  │'.center(WIDTH)}{RESET}",
+            f"{AMBER}{'[EX]    [ER]    [CF]'.center(WIDTH)}{RESET}",
+            f"{AMBER}{'│  │'.center(WIDTH)}{RESET}",
+            f"{AMBER}{'[AR]'.center(WIDTH)}{RESET}",
+            *empty_line(),
+            f"{AMBER}{'Legend'}{RESET}",
+            *separator(),
+            f"{AMBER_DIM}{'VE: Vault Entrance    DE: Decon         ST: Storage       SE: Security'}{RESET}",
+            f"{AMBER_DIM}{'AT: Atrium            EW: East Wing     MD: Medical       LQ: Living Quarters'}{RESET}",
+            f"{AMBER_DIM}{'CF: Cafeteria         WW: West Wing     CH: Chemical      ER: Emergency Response'}{RESET}",
+            f"{AMBER_DIM}{'                      AR: Armory        RD: Research & Development'}{RESET}",
         ]
     )
 
