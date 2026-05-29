@@ -54,9 +54,9 @@ def welcome() -> list[str]:
 
     messages.extend(
         [
-            *separator("\u2593"),
+            *separator("═"),
             f"{AMBER}{BLINK}{f'{STAR} Welcome to Vault 166 {STAR}'.center(WIDTH)}{RESET}",
-            *separator("\u2593"),
+            *separator("═"),
             *empty_line(),
             f"{OLIVE}{f'Survive the vault and gather the key items needed to win!'.center(WIDTH)}{RESET}",
             *empty_line(),
@@ -83,10 +83,10 @@ def farewell() -> list[str]:
     messages.extend(
         [
             *empty_line(5),
-            *separator("\u2593"),
-            f"{TEAL}{BLINK}{f'{STAR} {STAR} Exiting game... Thanks for playing Vault 166! {STAR} {STAR}'.center(WIDTH)}{RESET}",
-            f"{TEAL}{f'{HEART} {HEART} {HEART}'.center(WIDTH)}{RESET}",
-            *separator("\u2593"),
+            *separator("═"),
+            f"{AMBER}{BLINK}{f'{STAR} {STAR} Exiting game... Thanks for playing Vault 166! {STAR} {STAR}'.center(WIDTH)}{RESET}",
+            f"{AMBER}{f'{HEART} {HEART} {HEART}'.center(WIDTH)}{RESET}",
+            *separator("═"),
         ]
     )
 
