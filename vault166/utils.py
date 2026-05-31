@@ -48,6 +48,27 @@ def separator(symbol: str = "─", color: str = AMBER_DIM) -> list[str]:
     return messages
 
 
+def help():
+    """Returns a list of help messages to be displayed when the player types 'help'."""
+    messages = []
+
+    messages.extend(
+        [
+            f"{AMBER}Commands{RESET}",
+            *separator(),
+            f"{AMBER}  Move:{RESET}      go <direction>      Example: go north, go n, go up",
+            f"{AMBER}  Get:{RESET}       get <item>          Example: get flashlight, get fl",
+            f"{AMBER}  Save:{RESET}      save [slot]         Example: save, save test",
+            f"{AMBER}  Load:{RESET}      load [slot]         Example: load, load test",
+            f"{AMBER}  Delete:{RESET}    delete [slot]       Example: delete test",
+            f"{AMBER}  Other:{RESET}     map, saves, help, quit",
+            *separator(),
+        ]
+    )
+
+    return messages
+
+
 def welcome() -> list[str]:
     """Returns a list of welcome messages to be displayed at the start of the game."""
     messages = []
@@ -60,16 +81,7 @@ def welcome() -> list[str]:
             *empty_line(),
             f"{OLIVE}{f'Survive the vault and gather the key items needed to win!'.center(WIDTH)}{RESET}",
             *empty_line(),
-            f"{AMBER}Commands{RESET}",
-            *separator(),
-            f"{AMBER}  Move:{RESET}      go <direction>      Example: go north, go n, go up",
-            f"{AMBER}  Get:{RESET}       get <item>          Example: get flashlight, get fl",
-            f"{AMBER}  Save:{RESET}      save [slot]         Example: save, save test",
-            f"{AMBER}  Load:{RESET}      load [slot]         Example: load, load test",
-            f"{AMBER}  Delete:{RESET}    delete [slot]       Example: delete test",
-            f"{AMBER}  Other:{RESET}     map, saves, help, quit",
-            *separator(),
-            *empty_line(),
+            *help(),
         ]
     )
 
