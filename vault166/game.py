@@ -288,9 +288,9 @@ class Game:
             display(welcome())
             while not self.game_over:
 
-                display(separator("="))
+                display(separator())
                 display(self._render_status())
-                display(separator("-"))
+                display(separator())
                 display(self._render_room())
                 display(empty_line())
 
