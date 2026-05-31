@@ -272,15 +272,7 @@ class Game:
             )
 
         elif action == "exit":
-            messages.extend(empty_line(10))
-            messages.extend(
-                [
-                    f"{GREEN}\u2605 \u2605 Exiting game... Thanks for playing Vault 166! \u2605 \u2605{RESET}".center(
-                        80
-                    ),
-                    f"{GREEN}\u2764 \u2764 \u2764{RESET}".center(80),
-                ]
-            )
+            messages.extend(farewell())
             self.game_over = True
 
         else:
@@ -314,15 +306,7 @@ class Game:
                 display(empty_line(4))
 
         except KeyboardInterrupt:
-            display(empty_line(10))
-            display(
-                [
-                    f"{GREEN}\u2605 \u2605 Exiting game... Thanks for playing Vault 166! \u2605 \u2605{RESET}".center(
-                        80
-                    ),
-                    f"{GREEN}\u2764 \u2764 \u2764{RESET}".center(80),
-                ]
-            )
+            display(farewell())
             self.game_over = True
 
         finally:
