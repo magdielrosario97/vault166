@@ -1,7 +1,10 @@
 from vault166.utils import (
+    welcome,
+    farewell,
     empty_line,
     separator,
     display,
+    help,
     GREEN,
     BLUE,
     RED,
@@ -267,9 +270,7 @@ class Game:
                 messages.append(f"{RED}{message}{RESET}")
 
         elif action == "help":
-            messages.append(
-                f"{BLUE}Commands:{RESET} go <direction>, get <item>, map, save [slot], load [slot], delete [slot], help, exit/quit"
-            )
+            messages.extend(help())
 
         elif action == "exit":
             messages.extend(farewell())
@@ -284,6 +285,7 @@ class Game:
     def run(self):
         """Starts the main game loop, rendering the initial room and processing player commands until the game is over."""
         try:
+            display(welcome())
             while not self.game_over:
 
                 display(separator("="))
