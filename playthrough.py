@@ -20,9 +20,9 @@ from vault166.utils import (
 def scenario(title: str) -> None:
     """Prints a labeled scenario header."""
     display([GREEN])
-    display(separator("="))
+    display(separator("═"))
     print(f"SCENARIO: {title}".center(80))
-    display(separator("="))
+    display(separator("═"))
     display([RESET])
 
 
@@ -30,9 +30,9 @@ def run_commands(game: Game, commands: list[str]) -> None:
     """Feeds commands to the game and displays room, status, and output for each turn."""
     for command in commands:
 
-        display(separator("="))
+        display(separator())
         display(game._render_status())
-        display(separator("-"))
+        display(separator())
         display(game._render_room())
         display(empty_line())
 
@@ -43,6 +43,8 @@ def run_commands(game: Game, commands: list[str]) -> None:
         if messages:
             display(empty_line())
             display(messages)
+
+        display(empty_line())
 
         if game.game_over:
             break
@@ -184,6 +186,7 @@ run_commands(game, ["godmode", "tp West Wing", "go west"])
 scenario("Winner, Winner, Chicken Dinner")
 game = Game()
 display(welcome())
+display(empty_line())
 run_commands(
     game,
     [
