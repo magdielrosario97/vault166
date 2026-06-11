@@ -135,9 +135,7 @@ class Game:
 
         if room.note and not room.read_note:
             messages.extend(empty_line())
-            messages.extend(separator("*"))
-            messages.append(room.note)
-            messages.extend(separator("*"))
+            messages.extend(room.note)
 
             room.read_note = True
 
@@ -291,7 +289,7 @@ class Game:
                 display(separator())
                 display(self._render_status())
                 display(separator())
-                display(self._render_room())
+                display(self._render_room(), True)
                 display(empty_line())
 
                 command = input(f"{GREEN}> Enter your command: {RESET}")
