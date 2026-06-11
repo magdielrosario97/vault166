@@ -63,6 +63,7 @@ def help():
             f"{AMBER}  Delete:{RESET}    delete [slot]       Example: delete test",
             f"{AMBER}  Other:{RESET}     map, saves, help, quit",
             *separator(),
+            *empty_line(2),
         ]
     )
 
