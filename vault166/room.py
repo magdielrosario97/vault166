@@ -12,7 +12,7 @@ class Room:
         locked: bool = False,
         dark: bool = False,
         item: str | None = None,
-        note: str | None = None,
+        note: list[str] | None = None,
     ):
 
         self.name = name
