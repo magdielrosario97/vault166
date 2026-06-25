@@ -4,7 +4,7 @@ from vault166.utils import (
     empty_line,
     separator,
     display,
-    help,
+    help_commands,
     GREEN,
     BLUE,
     RED,
@@ -269,7 +269,7 @@ class Game:
                 messages.append(f"{RED}{message}{RESET}")
 
         elif action == "help":
-            messages.extend(help())
+            messages.extend(help_commands())
 
         elif action == "exit":
             messages.extend(farewell())

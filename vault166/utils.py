@@ -48,7 +48,7 @@ def separator(symbol: str = "─", color: str = AMBER_DIM) -> list[str]:
     return messages
 
 
-def help():
+def help_commands():
     """Returns a list of help messages to be displayed when the player types 'help'."""
     messages = []
 
@@ -82,7 +82,7 @@ def welcome() -> list[str]:
             *empty_line(),
             f"{OLIVE}{f'Survive the vault and gather the key items needed to win!'.center(WIDTH)}{RESET}",
             *empty_line(),
-            *help(),
+            *help_commands(),
         ]
     )
 
