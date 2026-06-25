@@ -203,11 +203,12 @@ class Game:
     def _render_status(self) -> list[str]:
         """Renders the player's current status, including room name, health, and inventory."""
         room = self.player.current_room
+        item_bag = ", ".join(sorted(self.player.inventory)) if self.player.inventory else "Empty"
         messages = []
 
         messages.append(f"{YELLOW}Current Room:{RESET} {room.name}")
         messages.append(f"{YELLOW}Health:{RESET} {self.player.health}")
-        messages.append(f"{YELLOW}Inventory:{RESET} {sorted(self.player.inventory)}")
+        messages.append(f"{YELLOW}Bag:{RESET} {item_bag}")
 
         return messages
 
