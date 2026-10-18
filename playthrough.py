@@ -9,21 +9,15 @@ from vault166.utils import (
     welcome,
     display,
     empty_line,
-    separator,
-    RED,
-    YELLOW,
-    GREEN,
-    RESET,
+    separator
 )
 
 
 def scenario(title: str) -> None:
     """Prints a labeled scenario header."""
-    display([GREEN])
     display(separator("═"))
     print(f"SCENARIO: {title}".center(80))
     display(separator("═"))
-    display([RESET])
 
 
 def run_commands(game: Game, commands: list[str]) -> None:
@@ -36,7 +30,7 @@ def run_commands(game: Game, commands: list[str]) -> None:
         display(game._render_room())
         display(empty_line())
 
-        print(f"{RED}>{RESET} {YELLOW}{command}{RESET}")
+        print(f"> {command}")
 
         messages = game.process_command(command)[1]
 

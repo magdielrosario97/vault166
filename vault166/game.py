@@ -4,12 +4,7 @@ from vault166.utils import (
     empty_line,
     separator,
     display,
-    help_commands,
-    GREEN,
-    BLUE,
-    RED,
-    YELLOW,
-    RESET,
+    help_commands
 )
 from vault166.player import Player
 from vault166.map import build_map, render_map
@@ -46,7 +41,7 @@ class Game:
         messages = []
 
         if direction not in current_room.connections:
-            messages.append(f"{RED}You can't go that way!{RESET}")
+            messages.append(f"You can't go that way!")
             return messages
 
         next_room = current_room.connections[direction]
@@ -54,22 +49,22 @@ class Game:
         if blocked_by_darkness(self.player, next_room):
             self.player.take_damage(DAMAGE)
             messages.append(
-                f"{RED}It is too dark. You trip and fall. | -{DAMAGE} health{RESET}"
+                f"It is too dark. You trip and fall. | -{DAMAGE} health"
             )
 
             if not self.player.is_alive():
                 messages.extend(empty_line())
-                messages.append(f"{RED}You collapsed. Game over!{RESET}")
+                messages.append(f"You collapsed. Game over!")
                 self.game_over = True
             return messages
 
         if blocked_by_lock(self.player, next_room):
             if next_room.name == "Armory":
                 messages.append(
-                    f"{YELLOW}The Armory lock is seized. Maybe something can melt it.{RESET}"
+                    f"The Armory lock is seized. Maybe something can melt it.   "
                 )
             else:
-                messages.append(f"{RED}The door is locked. You need a keycard.{RESET}")
+                messages.append(f"The door is locked. You need a keycard.")
             return messages
 
         self.player.current_room = next_room
@@ -77,22 +72,22 @@ class Game:
 
         if boss_room(current_room):
             if has_boss_items(self.player):
-                messages.append(f"{GREEN}{current_room.description}{RESET}")
+                messages.append(f"{current_room.description}")
                 messages.extend(empty_line())
                 messages.append(
-                    f"{GREEN}Congratulations! You encountered and defeated Maradonyx.{RESET}"
+                    f"Congratulations! You encountered and defeated Maradonyx."
                 )
                 messages.extend(empty_line())
                 messages.append(
-                    f"{GREEN}With the threat neutralized, you recover the schematics and make your way out of Vault 166.{RESET}"
+                    f"With the threat neutralized, you recover the schematics and make your way out of Vault 166."
                 )
                 messages.extend(empty_line())
-                messages.append(f"{GREEN}You win!{RESET}")
+                messages.append(f"You win!")
             else:
-                messages.append(f"{RED}{current_room.description}{RESET}")
+                messages.append(f"{current_room.description}")
                 messages.extend(empty_line())
                 messages.append(
-                    f"{RED}You encountered Maradonyx unprepared. Game over!{RESET}"
+                    f"You encountered Maradonyx unprepared. Game over!"
                 )
             self.game_over = True
             return messages
@@ -102,11 +97,11 @@ class Game:
         if damage:
             self.player.take_damage(damage)
             messages.append(
-                f"{RED}The environment harms you. | -{damage} health{RESET}"
+                f"The environment harms you. | -{damage} health"
             )
             if not self.player.is_alive():
                 messages.extend(empty_line())
-                messages.append(f"{RED}You collapsed. Game over!{RESET}")
+                messages.append(f"You collapsed. Game over!")
                 self.game_over = True
                 return messages
 
@@ -120,9 +115,9 @@ class Game:
         if current_room.item == item:
             self.player.inventory.add(item)
             current_room.item = None
-            messages.append(f"{GREEN}You picked up the {BLUE}{item}{RESET}.")
+            messages.append(f"You picked up the {item}.")
         else:
-            messages.append(f"{RED}There is no item in the room.{RESET}")
+            messages.append(f"There is no item in the room.")
 
         return messages
 
@@ -142,7 +137,7 @@ class Game:
         if room.item is not None:
             messages.extend(empty_line())
             messages.append(
-                f"\u269e You see a {BLUE}{room.item}{RESET} in the room \u269f"
+                f"\u269e You see a {room.item} in the room \u269f"
             )
 
         return messages
@@ -153,31 +148,31 @@ class Game:
 
         if action == "tp":
             self.player.current_room = self.rooms[value]
-            messages.append(f"{GREEN}Teleported to {value}{RESET}")
+            messages.append(f"Teleported to {value}")
             return messages
 
         if action == "add":
             if value in self.player.inventory:
-                messages.append(f"{YELLOW}{value} is already in inventory{RESET}")
+                messages.append(f"{value} is already in inventory")
             else:
                 self.player.inventory.add(value)
-                messages.append(f"{GREEN}Added {value} to inventory{RESET}")
+                messages.append(f"Added {value} to inventory")
             return messages
 
         if action == "remove":
             if value in self.player.inventory:
                 self.player.inventory.remove(value)
-                messages.append(f"{GREEN}Removed {value} from inventory{RESET}")
+                messages.append(f"Removed {value} from inventory")
             else:
-                messages.append(f"{RED}{value} is not in inventory{RESET}")
+                messages.append(f"{value} is not in inventory")
             return messages
 
         if action == "clearinv":
             if not self.player.inventory:
-                messages.append(f"{YELLOW}Inventory is already empty{RESET}")
+                messages.append(f"Inventory is already empty")
             else:
                 self.player.inventory.clear()
-                messages.append(f"{GREEN}Cleared inventory{RESET}")
+                messages.append(f"Cleared inventory")
             return messages
 
         if action == "godmode":
@@ -195,7 +190,7 @@ class Game:
                 }
             )
             messages.append(
-                f"{GREEN}Maxed health and added all items to inventory{RESET}"
+                f"Maxed health and added all items to inventory"
             )
 
         return messages
@@ -206,9 +201,9 @@ class Game:
         item_bag = ", ".join(sorted(self.player.inventory)) if self.player.inventory else "Empty"
         messages = []
 
-        messages.append(f"{YELLOW}Current Room:{RESET} {room.name}")
-        messages.append(f"{YELLOW}Health:{RESET} {self.player.health}")
-        messages.append(f"{YELLOW}Bag:{RESET} {item_bag}")
+        messages.append(f"Current Room: {room.name}")
+        messages.append(f"Health: {self.player.health}")
+        messages.append(f"Bag: {item_bag}")
 
         return messages
 
@@ -220,7 +215,7 @@ class Game:
         if command.strip() == "debug":
             self.debug = not self.debug
             state = "enabled" if self.debug else "disabled"
-            messages.append(f"{YELLOW}Debug mode {state}{RESET}")
+            messages.append(f"Debug mode {state}")
             return "debug", messages
 
         action, value = self.parser.parse(command)
@@ -241,32 +236,32 @@ class Game:
 
         elif action == "save":
             message = self.save_manager.save(value, self.player, self.rooms)
-            messages.append(f"{GREEN}{message}{RESET}")
+            messages.append(f"{message}")
 
         elif action == "load":
             success, message = self.save_manager.load(value, self.player, self.rooms)
 
             if success:
-                messages.append(f"{GREEN}{message}{RESET}")
+                messages.append(f"{message}")
             else:
-                messages.append(f"{RED}{message}{RESET}")
+                messages.append(f"{message}")
 
         elif action == "saves":
             saves = self.save_manager.view()
             if saves:
-                messages.append(f"{YELLOW}Save Slots:{RESET}")
+                messages.append(f"Save Slots:")
                 for slot_name, last_save in saves:
                     messages.append(f" - {slot_name} (Last saved: {last_save})")
             else:
-                messages.append(f"{YELLOW}No save slots found.{RESET}")
+                messages.append(f"No save slots found.")
 
         elif action == "delete":
             success, message = self.save_manager.delete(value)
 
             if success:
-                messages.append(f"{GREEN}{message}{RESET}")
+                messages.append(f"{message}")
             else:
-                messages.append(f"{RED}{message}{RESET}")
+                messages.append(f"{message}")
 
         elif action == "help":
             messages.extend(help_commands())
@@ -276,7 +271,7 @@ class Game:
             self.game_over = True
 
         else:
-            messages.append(f"{RED}{value}{RESET}")
+            messages.append(f"{value}")
 
         return action, messages
 
@@ -293,7 +288,7 @@ class Game:
                 display(self._render_room(), True)
                 display(empty_line())
 
-                command = input(f"{GREEN}> Enter your command: {RESET}")
+                command = input(f"> Enter your command: ")
 
                 messages = self.process_command(command)[1]
 
